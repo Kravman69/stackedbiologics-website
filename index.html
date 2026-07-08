@@ -1,246 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stacked Biologics</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
-
-        body {
-            font-family: 'Inter', system_ui, sans-serif;
-            background-color: #0a1421;
-            color: #e2e8f0;
-        }
-
-        .heading-font {
-            font-family: 'Space Grotesk', 'Inter', system_ui, sans-serif;
-            font-weight: 600;
-        }
-
-        .gold-accent {
-            color: #c9a227;
-        }
-
-        .molecular-bg {
-            background-image: 
-                linear-gradient(rgba(201, 162, 39, 0.12) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(201, 162, 39, 0.12) 1px, transparent 1px);
-            background-size: 65px 65px;
-            position: relative;
-        }
-
-        .section-header {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #c9a227;
-            letter-spacing: -0.03em;
-        }
-
-        .premium-card {
-            background-color: #111f2e;
-            border: 1px solid #2a3f55;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .premium-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3), 0 0 30px -5px rgba(201, 162, 39, 0.15);
-            border-color: #3d546e;
-        }
-
-        .promise-item {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .promise-icon {
-            color: #c9a227;
-            font-size: 1.25rem;
-            margin-top: 0.25rem;
-            flex-shrink: 0;
-            width: 1.5rem;
-            text-align: center;
-        }
-
-        .nav-brand {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.25rem;
-        }
-
-        @media (max-width: 768px) {
-            .nav-brand {
-                gap: 0;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stacked Biologics — Research Chemicals &amp; Laboratory Materials</title>
+<meta name="description" content="Stacked Biologics supplies high-purity research chemicals and peptides for laboratory investigation only. Research Use Only (RUO). Not for human consumption, drug, cosmetic, or dietary use.">
+<meta name="theme-color" content="#0a1421">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Stacked Biologics — Research Chemicals">
+<meta property="og:description" content="Laboratory research chemicals and peptides. Research Use Only. Not for human consumption.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.stackedbiologics.com/">
+<link rel="stylesheet" href="assets/styles.css">
 </head>
-<body class="molecular-bg">
+<body>
 
-    <!-- Navigation -->
-    <nav class="bg-[#0a1421]/95 backdrop-blur-md border-b border-slate-700 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 py-4 md:py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
-            <div class="flex items-center gap-x-3">
-                <img src="stacked_logo_dark_bg.jpg" alt="Stacked Biologics" class="h-12 md:h-20 w-auto">
-                <div class="nav-brand">
-                    <span class="font-semibold text-xl md:text-4xl tracking-[-1px] md:tracking-[-2px] text-white">STACKED</span>
-                    <span class="font-semibold text-xl md:text-4xl tracking-[-1px] md:tracking-[-2px] gold-accent">BIOLOGICS</span>
-                </div>
-            </div>
-            <a href="#products" class="px-3 md:px-6 py-2 md:py-3 bg-[#c9a227] hover:bg-[#b8973a] text-[#0a1421] font-semibold rounded-lg md:rounded-2xl text-xs md:text-sm transition-all whitespace-nowrap">
-                Explore Compounds
-            </a>
-        </div>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html" aria-label="Stacked Biologics home">
+      <img src="stacked_logo_dark_bg.jpg" alt="">
+      <span class="brand-text">
+        <span class="word">STACKED</span>
+        <span class="word word-gold">BIOLOGICS</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#standards">Standards</a>
+      <a href="#compliance">Compliance</a>
     </nav>
-
-    <!-- Hero -->
-    <div class="max-w-5xl mx-auto px-4 md:px-8 pt-8 md:pt-12 pb-8 md:pb-12 text-center">
-        <h1 class="text-4xl md:text-6xl font-semibold tracking-tight md:tracking-[-3.5px] heading-font text-white mb-4 md:mb-6">Stacked Biologics</h1>
-        <p class="text-lg md:text-xl text-[#c9a227] font-medium tracking-tight mb-4 md:mb-6">
-            Precision Research on Biological Peptides<br>
-            <span class="text-white">in Multiple Delivery Formats</span>
-        </p>
-        <p class="text-base md:text-lg text-slate-400 max-w-lg mx-auto">
-            High-purity compounds for investigators exploring recovery, metabolic health, and physiological optimization.
-        </p>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm" href="#catalog">Browse compounds</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
     </div>
+  </div>
+</header>
 
-    <!-- Our Focus -->
-    <div class="max-w-4xl mx-auto px-4 md:px-8 pb-12 md:pb-24">
-        <div class="premium-card rounded-2xl md:rounded-3xl p-6 md:p-10">
-            <h2 class="section-header mb-3 md:mb-4 text-lg md:text-xl">Our Focus</h2>
-            <p class="text-base md:text-lg leading-relaxed text-slate-300">
-                Stacked Biologics provides high-purity peptides and biological compounds for laboratory research. 
-                We focus on compounds commonly studied for recovery, metabolic health, tissue support, and healthy aging, 
-                with a commitment to quality and reliability.
-            </p>
-        </div>
+<nav class="mobile-nav" aria-label="Mobile">
+  <a href="index.html">Home</a>
+  <a href="#catalog">Catalog</a>
+  <a href="#standards">Standards</a>
+  <a href="#compliance">Compliance</a>
+  <a href="retatrutide.html">Retatrutide</a>
+  <a href="enclomiphene.html">Enclomiphene</a>
+  <a href="bpc-157.html">BPC-157</a>
+  <a href="ghk-cu.html">GHK-Cu</a>
+</nav>
+
+<main>
+<!-- RUO banner -->
+<div class="ruo-banner" role="note" id="ruo-banner">
+  <div class="container">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.3 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.3a2 2 0 0 0-3.4 0z"/></svg>
+    <p><strong>Research Use Only (RUO).</strong> All materials sold by Stacked Biologics are intended strictly for laboratory research by qualified investigators. They are <strong>not for human consumption</strong>, not a drug, not a cosmetic, not a dietary supplement, and not for veterinary therapeutic use. No product is offered or labeled for diagnosis, treatment, cure, or prevention of any disease.</p>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-center">
+    <span class="badge-pill"><span class="dot"></span>Chemical supply &middot; <b>Research Use Only</b></span>
+    <h1>Research chemicals for <span class="grad">laboratory investigation.</span></h1>
+    <p class="sub">Stacked Biologics supplies high-purity peptides and small-molecule research materials for in vitro and controlled laboratory studies. Documented identity data. Strict non-clinical framing.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary btn-lg" href="#catalog">View research catalog
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn-ghost btn-lg" href="#compliance">Read compliance notice</a>
     </div>
-
-    <!-- Our Promise -->
-    <div class="max-w-5xl mx-auto px-4 md:px-8 pb-12 md:pb-24">
-        <div class="text-center mb-8 md:mb-10">
-            <h2 class="section-header text-xl md:text-2xl">Our Promise</h2>
-        </div>
-        <div class="max-w-3xl mx-auto grid gap-y-4 md:gap-y-6 text-base md:text-lg">
-            <div class="promise-item">
-                <span class="promise-icon"><i class="fas fa-check-circle"></i></span>
-                <span class="text-slate-300">Every product, lot, and batch undergoes independent third-party testing.</span>
-            </div>
-            <div class="promise-item">
-                <span class="promise-icon"><i class="fas fa-lock"></i></span>
-                <span class="text-slate-300">We maintain full transparency on sourcing, testing protocols, and quality documentation.</span>
-            </div>
-            <div class="promise-item">
-                <span class="promise-icon"><i class="fas fa-book"></i></span>
-                <span class="text-slate-300">We focus exclusively on compounds backed by published scientific research.</span>
-            </div>
-            <div class="promise-item">
-                <span class="promise-icon"><i class="fas fa-flask-vial"></i></span>
-                <span class="text-slate-300">We operate with a strict research-use-only standard.</span>
-            </div>
-        </div>
+    <div class="hero-trust">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Third-party lot testing</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V5z"/></svg>Research-use-only standard</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Published-literature compounds</span>
     </div>
+  </div>
+</section>
 
-    <!-- Products -->
-    <div id="products" class="max-w-7xl mx-auto px-4 md:px-8 pb-12 md:pb-24">
-        <div class="text-center mb-8 md:mb-12">
-            <h2 class="section-header text-2xl md:text-4xl mb-2 md:mb-3">Our Research Compounds</h2>
-            <p class="text-base md:text-lg text-slate-400">Available in multiple delivery formats — including oral and topical options.</p>
-        </div>
+<!-- Trust strip -->
+<div class="trust-strip">
+  <div class="container">
+    <span class="label">Built for research institutions</span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM8 7h8l1 13H7L8 7z"/></svg>Lab investigators</span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>Controlled handling</span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Identity documentation</span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Non-clinical supply only</span>
+  </div>
+</div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6">
-            
-            <!-- Retatrutide -->
-            <a href="retatrutide_info.html" class="premium-card rounded-2xl md:rounded-3xl p-5 md:p-7 block group">
-                <div class="flex justify-between items-start mb-4 md:mb-5">
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-semibold text-white group-hover:text-[#c9a227] transition-colors">Retatrutide</h3>
-                        <span class="text-xs px-3 py-1 mt-2 inline-block bg-slate-800 text-slate-300 rounded-full">Injectable</span>
-                    </div>
-                    <i class="fas fa-syringe text-2xl md:text-3xl text-slate-600 group-hover:text-[#c9a227] transition-colors flex-shrink-0"></i>
-                </div>
-                <p class="text-sm text-slate-400">Triple agonist research peptide for metabolic studies.</p>
-            </a>
-
-            <!-- Enclomiphene -->
-            <a href="enclomiphene_info.html" class="premium-card rounded-2xl md:rounded-3xl p-5 md:p-7 block group">
-                <div class="flex justify-between items-start mb-4 md:mb-5">
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-semibold text-white group-hover:text-[#c9a227] transition-colors">Enclomiphene</h3>
-                        <span class="text-xs px-3 py-1 mt-2 inline-block bg-slate-800 text-slate-300 rounded-full">Oral / Sublingual</span>
-                    </div>
-                    <i class="fas fa-pills text-2xl md:text-3xl text-slate-600 group-hover:text-[#c9a227] transition-colors flex-shrink-0"></i>
-                </div>
-                <p class="text-sm text-slate-400">Selective estrogen receptor modulator for endocrine research.</p>
-            </a>
-
-            <!-- BPC-157 Oral -->
-            <a href="bpc157_oral_info.html" class="premium-card rounded-2xl md:rounded-3xl p-5 md:p-7 block group">
-                <div class="flex justify-between items-start mb-4 md:mb-5">
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-semibold text-white group-hover:text-[#c9a227] transition-colors">BPC-157 Oral</h3>
-                        <span class="text-xs px-3 py-1 mt-2 inline-block bg-slate-800 text-slate-300 rounded-full">Oral Capsules</span>
-                    </div>
-                    <i class="fas fa-capsules text-2xl md:text-3xl text-slate-600 group-hover:text-[#c9a227] transition-colors flex-shrink-0"></i>
-                </div>
-                <p class="text-sm text-slate-400">Pentadecapeptide for tissue and recovery research.</p>
-            </a>
-
-            <!-- GHK-Cu -->
-            <a href="ghkcu_facial_serum_info.html" class="premium-card rounded-2xl md:rounded-3xl p-5 md:p-7 block group">
-                <div class="flex justify-between items-start mb-4 md:mb-5">
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-semibold text-white group-hover:text-[#c9a227] transition-colors">GHK-Cu 2%</h3>
-                        <span class="text-xs px-3 py-1 mt-2 inline-block bg-slate-800 text-slate-300 rounded-full">Topical Serum</span>
-                    </div>
-                    <i class="fas fa-flask text-2xl md:text-3xl text-slate-600 group-hover:text-[#c9a227] transition-colors flex-shrink-0"></i>
-                </div>
-                <p class="text-sm text-slate-400">Copper tripeptide for skin biology research.</p>
-            </a>
-
-            <!-- CJC-1295 + Ipamorelin -->
-            <div class="premium-card rounded-2xl md:rounded-3xl p-5 md:p-7 opacity-90">
-                <div class="flex justify-between items-start mb-4 md:mb-5">
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-semibold text-white">CJC-1295 + Ipamorelin</h3>
-                        <span class="text-xs px-3 py-1 mt-2 inline-block bg-slate-800 text-slate-300 rounded-full">Injectable Blend</span>
-                    </div>
-                    <i class="fas fa-syringe text-2xl md:text-3xl text-slate-600 flex-shrink-0"></i>
-                </div>
-                <p class="text-sm text-slate-400">Growth hormone secretagogue research blend (Coming Soon).</p>
-            </div>
-
-        </div>
+<!-- Focus -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Our focus</span>
+      <h2>A chemical supply company for research materials.</h2>
+      <p>We source and supply peptides and research compounds studied in the published literature. Every listing is framed as a laboratory material—with identity fields, handling notes for lab storage, and an explicit Research Use Only disclaimer. We do not market products for personal use, wellness, beauty, or clinical treatment.</p>
     </div>
-
-    <!-- Our Testing Standards -->
-    <div class="max-w-5xl mx-auto px-4 md:px-8 pb-12 md:pb-24">
-        <div class="premium-card rounded-2xl md:rounded-3xl p-6 md:p-10">
-            <h2 class="section-header mb-3 md:mb-4 text-lg md:text-xl">Our Testing Standards</h2>
-            <p class="text-base md:text-lg text-slate-300">We are committed to providing well-documented, independently verified research materials. Detailed testing protocols will be available here.</p>
+    <div class="grid cols-3">
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM8 7h8l1 13H7L8 7z"/></svg>
         </div>
+        <h3>Laboratory materials</h3>
+        <p>Compounds are described by chemical identity, form as a research material, and storage conditions appropriate for a laboratory environment—not consumer application language.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V5z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>Quality documentation</h3>
+        <p>Independent third-party testing on lots and batches. Transparency on sourcing and quality documentation for investigators who require verifiable research materials.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <h3>Literature-backed catalog</h3>
+        <p>We focus on compounds with public chemical identifiers and published research context. Unknowns are marked explicitly rather than invented.</p>
+      </article>
     </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-700 bg-[#050d16]">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12 text-xs md:text-sm text-slate-400">
-            <div class="flex flex-col md:flex-row justify-between gap-y-6 gap-x-4">
-                <div>
-                    <span class="font-semibold text-white text-base md:text-lg">STACKED BIOLOGICS</span>
-                    <p class="mt-2 text-xs md:text-sm">Research compounds for laboratory use only.</p>
-                </div>
-                <div class="text-xs max-w-md">
-                    All products are sold strictly for research and laboratory use only. Not intended for human consumption.
-                </div>
-            </div>
+<!-- Catalog -->
+<section class="section section--alt" id="catalog">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Research catalog</span>
+      <h2>Our research compounds</h2>
+      <p>Each compound page lists chemical class, public CAS when available, molecular formula / approximate molecular weight, research-material form, lab storage notes, and a literature-framed research summary—plus a legal RUO disclaimer.</p>
+    </div>
+    <div class="grid cols-3">
+
+      <a class="product-card" href="retatrutide.html">
+        <div class="pc-top">
+          <div>
+            <h3>Retatrutide</h3>
+            <span class="tag">Lyophilized peptide</span>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM8 7h8l1 13H7L8 7z"/></svg>
+          </div>
         </div>
-    </footer>
+        <p>Investigational triple agonist peptide (GLP-1 / GIP / glucagon receptors). CAS 2381089-83-2. Supplied as lyophilized research material.</p>
+        <div class="pc-foot">View identity data
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
 
+      <a class="product-card" href="enclomiphene.html">
+        <div class="pc-top">
+          <div>
+            <h3>Enclomiphene</h3>
+            <span class="tag">Research solution</span>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+          </div>
+        </div>
+        <p>Selective estrogen receptor modulator (SERM); trans-isomer of clomiphene. Free-base CAS 15690-57-0. Laboratory research material.</p>
+        <div class="pc-foot">View identity data
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+
+      <a class="product-card" href="bpc-157.html">
+        <div class="pc-top">
+          <div>
+            <h3>BPC-157</h3>
+            <span class="tag">Pentadecapeptide</span>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+          </div>
+        </div>
+        <p>Synthetic 15-amino-acid peptide (Body Protection Compound fragment). CAS 137525-51-0. C<sub>62</sub>H<sub>98</sub>N<sub>16</sub>O<sub>22</sub>. Research solid format.</p>
+        <div class="pc-foot">View identity data
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+
+      <a class="product-card" href="ghk-cu.html">
+        <div class="pc-top">
+          <div>
+            <h3>GHK-Cu</h3>
+            <span class="tag">Copper tripeptide</span>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a7 7 0 0 1 7 7c0 4-3 7-7 11-4-4-7-7-7-11a7 7 0 0 1 7-7z"/></svg>
+          </div>
+        </div>
+        <p>Copper(II)–glycyl-L-histidyl-L-lysine complex. Ligand CAS 49557-75-7; complex often cited as 89030-95-5. Aqueous research vehicle.</p>
+        <div class="pc-foot">View identity data
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+
+      <div class="product-card is-soon" aria-disabled="true">
+        <div class="pc-top">
+          <div>
+            <h3>CJC-1295 + Ipamorelin</h3>
+            <span class="tag soon">Coming soon</span>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+        </div>
+        <p>Growth-hormone–axis research peptides (GHRH analog + ghrelin-receptor agonist). Catalog listing retained; not yet available for order.</p>
+        <div class="pc-foot">Not yet available</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Standards -->
+<section class="section" id="standards">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Quality</span>
+      <h2>Testing standards</h2>
+      <p>We are committed to well-documented, independently verified research materials. Investigators may request lot-level documentation where available.</p>
+    </div>
+    <div class="grid cols-2">
+      <article class="card">
+        <h3>Independent verification</h3>
+        <p>Every product lot and batch is intended to undergo independent third-party analytical testing appropriate to the material class (e.g., identity and purity assays for peptides).</p>
+      </article>
+      <article class="card">
+        <h3>Traceability</h3>
+        <p>We maintain transparency on sourcing, testing protocols, and quality documentation so laboratory customers can meet their internal procurement requirements.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Compliance -->
+<section class="section section--alt" id="compliance">
+  <div class="container narrow">
+    <div class="section-head center">
+      <span class="eyebrow">Legal</span>
+      <h2>Research Use Only — compliance notice</h2>
+    </div>
+    <div class="disclaimer-box" id="legal-disclaimer">
+      <h2>Strict laboratory use</h2>
+      <p><strong>All Stacked Biologics products are sold strictly for research and laboratory use only (RUO).</strong> They are not intended for human consumption. They are not a drug, not a cosmetic, not a dietary supplement, and not a veterinary medicine. They are not offered for the diagnosis, treatment, cure, or prevention of any disease in humans or animals.</p>
+      <p>By purchasing or using these materials, the buyer represents that they are a qualified researcher or institution, that materials will be handled under appropriate laboratory controls, and that they will not resell or redistribute products for personal, cosmetic, dietary, or clinical use.</p>
+      <p>Product pages provide chemical identity and literature-context summaries for research planning. Nothing on this site constitutes medical advice, dosing guidance for people, or instructions for human or animal administration.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="brand-col">
+        <div class="name">STACKED <span>BIOLOGICS</span></div>
+        <p>Chemical supply company specializing in research peptides and laboratory materials. Research Use Only.</p>
+      </div>
+      <div>
+        <h4>Catalog</h4>
+        <div class="foot-links">
+          <a href="retatrutide.html">Retatrutide</a>
+          <a href="enclomiphene.html">Enclomiphene</a>
+          <a href="bpc-157.html">BPC-157</a>
+          <a href="ghk-cu.html">GHK-Cu</a>
+        </div>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <div class="foot-links">
+          <a href="#standards">Testing standards</a>
+          <a href="#compliance">Compliance</a>
+          <a href="index.html">Home</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <p><strong>Research Use Only.</strong> Not for human consumption. Not a drug, cosmetic, or dietary supplement. &copy; Stacked Biologics. www.stackedbiologics.com</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
 </body>
 </html>
