@@ -43,7 +43,24 @@ FORBIDDEN_PATTERNS = [
     r"\btake\s+\d+\s*(mg|mcg|ml)\s+(daily|per\s+day)\b",
     r"\bwellness\s+supplement\b",
     r"\bdietary\s+advice\b",
+    r"\bunit-?dose\b",
+    r"\bencapsulated\s+solid\b",
+    r"\boral-?format\b",
+    r"\boral\s+capsules?\b",
+    r"\bconsumer\s+oral\b",
 ]
+
+# Known-good chemical identifiers that must appear on the matching page
+COMPOUND_IDENTITY_FACTS = {
+    "retatrutide.html": [
+        "2381089-83-2",
+        "C221H342N46O68",  # checked after stripping tags
+        "4731",
+    ],
+    "enclomiphene.html": ["15690-57-0", "C26H28ClNO"],
+    "bpc-157.html": ["137525-51-0", "C62H98N16O22", "1419"],
+    "ghk-cu.html": ["49557-75-7"],
+}
 
 # Identity field labels / markers expected on each compound page
 IDENTITY_MARKERS = [
@@ -110,6 +127,30 @@ def check_identity(pages: list[str]) -> list[str]:
     return errors
 
 
+def check_compound_facts() -> list[str]:
+    """Assert researched CAS / formula / MW strings appear in shipped HTML (tag-stripped)."""
+    errors = []
+    for name, facts in COMPOUND_IDENTITY_FACTS.items():
+        path = ROOT / name
+        if not path.is_file():
+            errors.append(f"MISSING compound page for facts: {name}")
+            continue
+        # Collapse sub/sup tags so C221H342... matches C<sub>221</sub>H<sub>...
+        raw = read(path)
+        collapsed = re.sub(r"</?(?:sub|sup)>", "", raw, flags=re.I)
+        text = strip_tags(collapsed)
+        for fact in facts:
+            if fact not in text and fact not in collapsed:
+                errors.append(f"{name}: missing researched identity fact {fact!r}")
+        # Guard against previously invented retatrutide formula
+        if name == "retatrutide.html" and "C187H281N43O60" in collapsed.replace("</sub>", "").replace("<sub>", ""):
+            # normalize by stripping remaining tags around numbers
+            flat = re.sub(r"<[^>]+>", "", collapsed)
+            if "C187H281N43O60" in flat.replace(" ", ""):
+                errors.append(f"{name}: contains incorrect formula C187H281N43O60")
+    return errors
+
+
 def check_assets() -> list[str]:
     errors = []
     for rel in [
@@ -172,6 +213,7 @@ def main() -> int:
         ("required RUO phrases", check_required_phrases(ALL_CONTENT_PAGES)),
         ("forbidden human-use patterns", check_forbidden(ALL_CONTENT_PAGES)),
         ("compound identity fields", check_identity(COMPOUND_PAGES)),
+        ("researched CAS/formula/MW facts", check_compound_facts()),
         ("assets / no CDN core", check_assets()),
         ("internal links", check_internal_links()),
         ("no Docutise copy", check_no_docutise_copy()),
