@@ -6,15 +6,15 @@ Static marketing / catalog site for **Stacked Biologics**, a chemical supply com
 
 ## Positioning
 
-- Research Use Only materials for qualified laboratory investigators
-- **Not** for human consumption
-- **Not** a drug, cosmetic, dietary supplement, or veterinary medicine
-- No human dosing, wellness, beauty, or clinical-treatment marketing
+- Research chemicals focused on identity data (CAS, formula, form, storage, literature context)
+- Research Use Only framing via a single [disclaimer](disclaimer.html) page and shared footer
+- **Not** for human consumption; not marketed as a drug, cosmetic, dietary supplement, or veterinary medicine
 
 ## Structure
 
 ```
-index.html              Home + catalog + compliance
+index.html              Home + catalog + standards
+disclaimer.html         Consolidated RUO / legal notice
 retatrutide.html        Compound identity page
 enclomiphene.html
 bpc-157.html
@@ -22,6 +22,7 @@ ghk-cu.html
 assets/styles.css       Self-contained design system (no CDN required for core look)
 assets/app.js           Mobile nav
 assets/fonts/           Self-hosted Inter variable font
+assets/brand/           Optimized logo marks + decorative molecule SVGs
 favicon.svg
 CNAME                   GitHub Pages custom domain
 robots.txt / sitemap.xml
@@ -43,8 +44,8 @@ python3 -m http.server 8080
 python3 tests/check_site.py
 ```
 
-Walks shipped HTML for RUO language, forbidden human-use marketing patterns, compound identity fields, and resolvable internal links.
+Walks shipped HTML for RUO language (disclaimer page + footer), forbidden human-use marketing patterns, compound identity fields, brand assets, and resolvable internal links.
 
 ## Brand
 
-Navy (`#0a1421`) + gold (`#c9a227`) palette retained from prior site; layout/token patterns informed by the Docutise marketing site design system (structure only—not product copy).
+Navy (`#0a1421`) + gold (`#c9a227`) palette from the Stacked Biologics logos. Header/footer use a cropped geometric mark (`assets/brand/logo-mark.png`); hero surfaces a larger mark. Decorative chemical-structure backgrounds use gold linework on navy (`assets/brand/molecule-*.svg`).

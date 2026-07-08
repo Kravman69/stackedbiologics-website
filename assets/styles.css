@@ -108,6 +108,25 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+/* Site-wide faint molecule tile (black/gold brand) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('brand/molecule-tile.svg');
+  background-size: 240px 240px;
+  background-repeat: repeat;
+  opacity: 0.04;
+}
+
+main, .site-header, .site-footer, .mobile-nav, .trust-strip {
+  position: relative;
+  z-index: 1;
 }
 
 main { flex: 1; }
@@ -264,10 +283,12 @@ h1, h2, h3, h4 {
   color: var(--on-dark);
   flex-shrink: 0;
 }
-.brand img {
-  height: 44px;
+.brand img,
+.brand-mark {
+  height: 48px;
   width: auto;
-  border-radius: 8px;
+  border-radius: 0;
+  object-fit: contain;
 }
 .brand-text {
   display: flex;
@@ -348,6 +369,38 @@ body.nav-open .mobile-nav { display: flex; }
 .mobile-nav a:hover { background: var(--ink-800); border-color: var(--line); }
 
 /* --------------------------------------------------------------------------
+   Molecule surface (decorative chemical structures, black/gold)
+   -------------------------------------------------------------------------- */
+.mol-surface {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.mol-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image: url('brand/molecule-bg.svg');
+  background-repeat: no-repeat;
+  background-position: 108% 20%;
+  background-size: min(720px, 70vw) auto;
+  opacity: 0.09;
+}
+.mol-surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 50% at 85% 15%, var(--brand-glow) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 10% 90%, rgba(201, 162, 39, 0.08) 0%, transparent 60%);
+  opacity: 0.55;
+}
+
+/* --------------------------------------------------------------------------
    Hero
    -------------------------------------------------------------------------- */
 .hero {
@@ -358,31 +411,44 @@ body.nav-open .mobile-nav { display: flex; }
   overflow: hidden;
   isolation: isolate;
 }
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--ink-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--ink-line) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(110% 80% at 50% 0%, #000 0%, transparent 70%);
-  opacity: 0.55;
-  z-index: -2;
+.hero.mol-surface::before {
+  background-position: 100% 40%;
+  background-size: min(640px, 65vw) auto;
+  opacity: 0.12;
 }
-.hero::after {
-  content: '';
-  position: absolute;
-  top: -280px; left: 50%;
-  transform: translateX(-50%);
-  width: 720px; height: 720px;
-  background: radial-gradient(circle, var(--brand-glow) 0%, transparent 62%);
-  filter: blur(40px);
-  opacity: 0.28;
-  z-index: -1;
+.hero.mol-surface::after {
+  opacity: 0.7;
 }
 
 .hero-center { text-align: center; max-width: 760px; margin-inline: auto; }
+
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+  max-width: 960px;
+  margin-inline: auto;
+}
+.hero-copy { max-width: 620px; }
+.hero-copy .hero-cta { justify-content: flex-start; }
+.hero-copy .hero-trust { justify-content: flex-start; }
+.hero-copy .sub { margin-inline: 0; }
+.hero-brand {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  border-radius: var(--r-xl);
+  background: linear-gradient(160deg, rgba(201, 162, 39, 0.1), rgba(10, 20, 33, 0.4));
+  border: 1px solid rgba(201, 162, 39, 0.22);
+  box-shadow: 0 0 48px -12px var(--brand-glow);
+}
+.hero-brand img {
+  width: 120px;
+  height: auto;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45));
+}
 
 .badge-pill {
   display: inline-flex;
@@ -442,30 +508,6 @@ body.nav-open .mobile-nav { display: flex; }
 }
 .hero-trust span { display: inline-flex; align-items: center; gap: 8px; }
 .hero-trust svg { width: 16px; height: 16px; color: var(--brand); flex-shrink: 0; }
-
-/* --------------------------------------------------------------------------
-   RUO banner (compliance)
-   -------------------------------------------------------------------------- */
-.ruo-banner {
-  background: var(--warn-bg);
-  border-block: 1px solid rgba(201, 162, 39, 0.28);
-  padding-block: 14px;
-}
-.ruo-banner .container {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  font-size: 0.88rem;
-  color: var(--on-dark-muted);
-  line-height: 1.5;
-}
-.ruo-banner strong { color: var(--brand-200); font-weight: 640; }
-.ruo-banner svg {
-  width: 20px; height: 20px;
-  color: var(--brand);
-  flex-shrink: 0;
-  margin-top: 1px;
-}
 
 /* --------------------------------------------------------------------------
    Trust strip
@@ -781,11 +823,23 @@ a.product-card:hover h3 { color: var(--brand); }
   gap: 36px;
   margin-bottom: 36px;
 }
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: inherit;
+}
+.footer-brand img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+}
 .site-footer .brand-col .name {
   font-weight: 680;
   font-size: 1.05rem;
   letter-spacing: -0.02em;
-  margin-bottom: 10px;
+  display: block;
 }
 .site-footer .brand-col .name span { color: var(--brand); }
 .site-footer p {
@@ -821,6 +875,14 @@ a.product-card:hover h3 { color: var(--brand); }
   line-height: 1.55;
 }
 .footer-legal strong { color: var(--muted); font-weight: 580; }
+.footer-legal a {
+  color: var(--brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.footer-legal a:hover { color: var(--brand-200); }
+
+.prose-block a.link-arrow { margin-top: 8px; }
 
 /* --------------------------------------------------------------------------
    Utilities
@@ -854,9 +916,18 @@ a.product-card:hover h3 { color: var(--brand); }
   .identity-grid { grid-template-columns: 1fr; }
   .section { padding-block: 56px; }
   .hero { padding-block: 48px 56px; }
+  .hero-layout { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+  .hero-copy { max-width: none; }
+  .hero-copy .sub { margin-inline: auto; }
+  .hero-copy .hero-cta,
+  .hero-copy .hero-trust { justify-content: center; }
+  .hero-brand { margin-inline: auto; max-width: 160px; }
+  .hero-brand img { width: 88px; }
   .footer-grid { grid-template-columns: 1fr; }
-  .brand img { height: 36px; }
+  .brand img,
+  .brand-mark { height: 40px; }
   .prose-block { padding: 22px; }
+  .mol-surface::before { opacity: 0.06; background-position: 120% 0%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
