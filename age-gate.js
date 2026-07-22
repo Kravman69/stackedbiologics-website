@@ -20,8 +20,8 @@
     exitUrl: "https://www.google.com",
     termsUrl: "disclaimer.html",
     storageKey: "sb-ruo-gate",
-    version: "2026-07d",
-    persist: true,
+    version: "2026-07e",
+    persist: false,
     introSrc: "grok_video_2026-07-10-20-01-11.mp4",
     introPoster: "sb-intro-poster.jpg",
     introKey: "sb-intro-2026-07",
@@ -165,12 +165,6 @@
             '<li>You are at least <strong>21 years of age</strong>.</li>' +
             '<li>You understand that all products sold by Stacked Biologics are intended for <strong>research use only</strong>.</li>' +
             '<li>You have reviewed our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>.</li>' +
-          '</ul>' +
-          '<p class="sb-gate-sub">Important Warnings</p>' +
-          '<ul class="sb-gate-list">' +
-            '<li>No statements on this website are intended to diagnose, treat, cure, or prevent any disease.</li>' +
-            '<li>Stacked Biologics makes no claims regarding the safety or efficacy of any product for human use.</li>' +
-            '<li>Always comply with all applicable local, state, and federal laws and regulations.</li>' +
           '</ul>' +
           '<p class="sb-gate-fine">By proceeding, you acknowledge that you have read and agree to these terms.</p>' +
         '</div>' +
