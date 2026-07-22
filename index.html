@@ -29,9 +29,10 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="index.html" aria-current="page">Home</a>
       <a href="#catalog">Catalog</a>
-      <a href="lab-results.html">Lab Results</a>
+      <a href="lab-results.html">COA&rsquo;s</a>
+      <a href="research.html">Research</a>
       <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="how-to-order.html">How to Order</a>
     </nav>
     <div class="nav-actions">
       <a class="btn btn-primary btn-sm" href="#catalog">Browse compounds</a>
@@ -43,12 +44,12 @@
 <nav class="mobile-nav" aria-label="Mobile">
   <a href="index.html">Home</a>
   <a href="#catalog">Catalog</a>
-  <a href="lab-results.html">Lab Results</a>
+  <a href="lab-results.html">COA&rsquo;s</a>
+  <a href="research.html">Research</a>
   <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
   <a href="how-to-order.html">How to order</a>
   <a href="disclaimer.html">Disclaimer</a>
-  <a href="retatrutide.html">GLP-3 RT40</a>
+  <a href="glp3-rt40.html">GLP-3 RT40</a>
   <a href="enclomiphene.html">Enclomiphene</a>
   <a href="bpc-157.html">BPC-157</a>
   <a href="ghk-cu.html">GHK-Cu</a>
@@ -56,17 +57,18 @@
 
 <main>
 <!-- Hero -->
-<section class="hero mol-surface">
-  <div class="container hero-layout">
+<section class="hero">
+  <div class="container hero-layout hero-centered">
     <div class="hero-copy">
-      <span class="badge-pill"><span class="dot"></span>Compound supply &middot; <b>Laboratory materials</b></span>
+      <img class="hero-logo" src="sb-lockup-full.png" width="616" height="694" alt="Stacked Biologics">
       <h1>High-purity <span class="grad">research compounds.</span></h1>
       <p class="sub">Peptides and small-molecule materials with documented identity data—CAS, formula, class, form, and literature context.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="#catalog">View the catalog
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a class="btn btn-ghost btn-lg" href="lab-results.html">Testing &amp; lab results</a>
+        <a class="btn btn-ghost btn-lg" href="lab-results.html">COA&rsquo;s</a>
+        <a class="btn btn-ghost btn-lg" href="research.html">Research</a>
       </div>
       <div class="hero-trust">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Third-party lot testing</span>
@@ -74,16 +76,12 @@
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Published-literature compounds</span>
       </div>
     </div>
-    <div class="hero-brand" aria-hidden="true">
-      <img src="sb-lockup-full.png" width="616" height="694" alt="">
-    </div>
   </div>
 </section>
 
 <!-- Trust strip -->
 <div class="trust-strip">
   <div class="container">
-    <span class="label">Built for laboratories</span>
     <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM8 7h8l1 13H7L8 7z"/></svg>Lab investigators</span>
     <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>Controlled handling</span>
     <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Identity documentation</span>
@@ -121,25 +119,40 @@
       <h2>The problem we solve</h2>
       <p>The supply market is crowded and inconsistent. Alongside reputable suppliers are vendors with uneven quality, generic paperwork, and practices that make it hard to know what is actually in the vial.</p>
     </div>
-    <div class="grid cols-3">
-      <article class="card problem-card">
-        <span class="prob-label">Problem</span>
-        <h3>Inconsistent purity</h3>
-        <p>What's advertised isn't always what's supplied. Some products contain incomplete or unrelated fragments.</p>
-        <p class="fix"><strong>Our answer:</strong> independent third-party purity assays on every lot, with results you can review.</p>
-      </article>
-      <article class="card problem-card">
-        <span class="prob-label">Problem</span>
-        <h3>Mislabeling risks</h3>
-        <p>In some cases, the compound delivered isn't the compound ordered — a serious risk for any lab.</p>
-        <p class="fix"><strong>Our answer:</strong> identity testing tied to batch IDs, so the label and the material always match.</p>
-      </article>
-      <article class="card problem-card">
-        <span class="prob-label">Problem</span>
-        <h3>Shaky documentation</h3>
-        <p>Generic or outdated certificates that don't reflect the actual batch being used undermine reproducibility.</p>
-        <p class="fix"><strong>Our answer:</strong> batch-specific documentation, published on our <a class="coa-link" href="lab-results.html">Lab Results</a> page.</p>
-      </article>
+    <div class="ps-list">
+      <div class="ps-row">
+        <div class="ps-problem">
+          <span class="prob-label">Problem</span>
+          <h3>Inconsistent purity</h3>
+          <p>What's advertised isn't always what's supplied.</p>
+        </div>
+        <div class="ps-answer">
+          <span class="ans-label">Our answer</span>
+          <p>Independent third-party purity assays on every lot, with results you can review.</p>
+        </div>
+      </div>
+      <div class="ps-row">
+        <div class="ps-problem">
+          <span class="prob-label">Problem</span>
+          <h3>Mislabeling risks</h3>
+          <p>Sometimes the compound delivered isn't the compound ordered.</p>
+        </div>
+        <div class="ps-answer">
+          <span class="ans-label">Our answer</span>
+          <p>Identity testing tied to batch IDs, so the label and the material always match.</p>
+        </div>
+      </div>
+      <div class="ps-row">
+        <div class="ps-problem">
+          <span class="prob-label">Problem</span>
+          <h3>Shaky documentation</h3>
+          <p>Generic certificates that don't reflect the actual batch.</p>
+        </div>
+        <div class="ps-answer">
+          <span class="ans-label">Our answer</span>
+          <p>Batch-specific documentation, published on our <a class="coa-link" href="lab-results.html">Lab Results</a> page.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -154,7 +167,7 @@
     </div>
     <div class="grid cols-3">
 
-      <a class="product-card" href="retatrutide.html">
+      <a class="product-card" href="glp3-rt40.html">
         <div class="pc-photo" aria-hidden="true"><img src="glp3-rt40-vial.png" loading="lazy" alt=""></div>
         <div class="pc-top">
           <div>
@@ -254,18 +267,29 @@
       <article class="card lit-card">
         <span class="lit-compound">GLP-3 RT40</span>
         <p>Investigational multi-receptor peptide agonist discussed in metabolic-pathway studies and multi-agonist peptide design, targeting GLP-1, GIP, and glucagon receptors.</p>
-        <p class="lit-src">Peer-reviewed &amp; clinical-development literature</p>
+        <a class="lit-link" href="research.html#glp3-rt40">View published literature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </article>
       <article class="card lit-card">
         <span class="lit-compound">BPC-157</span>
         <p>Synthetic pentadecapeptide studied in preclinical models of tissue response and recovery, with a substantial body of published studies.</p>
-        <p class="lit-src">Preclinical literature</p>
+        <a class="lit-link" href="research.html#bpc-157">View published literature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </article>
       <article class="card lit-card">
         <span class="lit-compound">GHK-Cu</span>
         <p>Copper-complexed tripeptide examined in extracellular-matrix and copper-biology studies across decades of publication.</p>
-        <p class="lit-src">Extracellular-matrix literature</p>
+        <a class="lit-link" href="research.html#ghk-cu">View published literature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </article>
+    </div>
+    <div style="margin-top:28px;text-align:center">
+      <a class="btn btn-ghost btn-lg" href="research.html">Browse the full research library
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </div>
 </section>
@@ -280,7 +304,7 @@
     <div class="faq-list">
       <details class="faq-item">
         <summary>How do I verify the purity of a compound?</summary>
-        <div class="faq-body">Every lot is intended to undergo independent third-party analytical testing. Batch-level documentation is listed on our <a href="lab-results.html">Lab Results</a> page, and investigators may request lot-level documentation directly.</div>
+        <div class="faq-body">Every lot is intended to undergo independent third-party analytical testing. Batch-level documentation is listed on our <a href="lab-results.html">COA&rsquo;s</a> page, and investigators may request lot-level documentation directly.</div>
       </details>
       <details class="faq-item">
         <summary>What documentation comes with each compound?</summary>
@@ -304,7 +328,7 @@
       </details>
       <details class="faq-item">
         <summary>How fast do you ship?</summary>
-        <div class="faq-body">Orders ship domestically from US facilities with full tracking; timelines are confirmed with your quote. Contact us for time-sensitive requirements.</div>
+        <div class="faq-body">Standard shipping is 2-day, with orders processed within 1 business day — tracked, from US facilities. For expedited needs, use the live chat in the corner.</div>
       </details>
       <details class="faq-item">
         <summary>Who can purchase from Stacked Biologics?</summary>
@@ -322,11 +346,11 @@
       <p class="sub">New compound listings, batch documentation releases, and literature updates. No noise.</p>
     </div>
     <div>
-      <form class="signup-form" action="mailto:info@stackedbiologics.com" method="post" enctype="text/plain">
+      <form class="signup-form" id="signup-form">
         <input type="email" name="email" placeholder="you@institution.edu" aria-label="Email address" required>
         <button class="btn btn-primary btn-lg" type="submit">Subscribe</button>
       </form>
-      <p class="signup-note">Occasional updates only. Unsubscribe anytime.</p>
+      <p class="signup-note" id="signup-note">Occasional updates only. Unsubscribe anytime.</p>
     </div>
   </div>
 </section>
@@ -346,7 +370,7 @@
       <div>
         <h4>Catalog</h4>
         <div class="foot-links">
-          <a href="retatrutide.html">GLP-3 RT40</a>
+          <a href="glp3-rt40.html">GLP-3 RT40</a>
           <a href="enclomiphene.html">Enclomiphene</a>
           <a href="bpc-157.html">BPC-157</a>
           <a href="ghk-cu.html">GHK-Cu</a>
@@ -356,9 +380,9 @@
         <h4>Company</h4>
         <div class="foot-links">
           <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-          <a href="how-to-order.html">How to order</a>
+              <a href="how-to-order.html">How to order</a>
           <a href="lab-results.html">Lab results</a>
+          <a href="research.html">Research library</a>
         </div>
       </div>
       <div>
@@ -372,7 +396,7 @@
       </div>
     </div>
     <div class="footer-legal">
-      <p><strong>Research Use Only.</strong> <a href="disclaimer.html">Full disclaimer</a>. &copy; Stacked Biologics. www.stackedbiologics.com</p>
+      <p><strong>Research Use Only.</strong> <a href="disclaimer.html">Full disclaimer</a>. Copyright &copy; 2026 Stacked Biologics, LLC. All Rights Reserved. &middot; www.stackedbiologics.com</p>
     </div>
   </div>
 </footer>
