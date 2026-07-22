@@ -394,9 +394,9 @@
     try {
       if (!sessionStorage.getItem('sb-gate-seen')) {
         sessionStorage.setItem('sb-gate-seen', '1');
-        setTimeout(open, 900);
+        setTimeout(open, 60000);
       }
-    } catch (e) { setTimeout(open, 900); }
+    } catch (e) { setTimeout(open, 60000); }
   }
   init();
 })();

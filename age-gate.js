@@ -20,7 +20,7 @@
     exitUrl: "https://www.google.com",
     termsUrl: "disclaimer.html",
     storageKey: "sb-ruo-gate",
-    version: "2026-07c",
+    version: "2026-07d",
     persist: true,
     introSrc: "grok_video_2026-07-10-20-01-11.mp4",
     introPoster: "sb-intro-poster.jpg",
