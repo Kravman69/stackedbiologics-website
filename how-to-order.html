@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<meta name="robots" content="index, follow, noarchive, noimageindex">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How to Order &amp; Contact | Stacked Biologics</title>
-<meta name="description" content="How to order research compounds from Stacked Biologics — request a quote by email, confirm, and receive tracked domestic shipping with batch IDs.">
+<meta name="description" content="How to order research compounds from Stacked Biologics — add items to your cart and submit your order, we reach out to arrange payment, then tracked domestic shipping with batch IDs.">
 <meta name="theme-color" content="#0a1421">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" type="image/png" href="sb-favicon.png">
 <link rel="apple-touch-icon" href="sb-favicon.png">
-<link rel="stylesheet" href="styles.css">
-<script src="age-gate.js" defer></script>
+<link rel="stylesheet" href="assets/styles.css">
+<script src="assets/age-gate.js" defer></script>
 </head>
 <body>
 
@@ -55,15 +58,15 @@
     </nav>
     <span class="badge-ruo">Qualified researchers &amp; institutions</span>
     <h1>How to order</h1>
-    <p class="class-line">Ordering and contact in one place. Handled directly by email while our online store is in development — three steps, one business day turnaround.</p>
+    <p class="class-line">Build your order in the cart, submit it, and we’ll reach out to confirm availability and arrange payment — three steps, one business day turnaround.</p>
   </div>
 </section>
 
 <section class="section tight">
   <div class="container narrow">
     <div class="grid cols-3">
-      <article class="card"><h3>1 &middot; Request a quote</h3><p>Email <a class="coa-link" href="mailto:info@stackedbiologics.com">info@stackedbiologics.com</a> with the compound and quantity you need.</p></article>
-      <article class="card"><h3>2 &middot; Confirm</h3><p>We reply within one business day with availability, pricing, batch information, and payment instructions.</p></article>
+      <article class="card"><h3>1 &middot; Submit your order</h3><p>Browse the catalog, add your compounds and quantities to the cart, then submit at checkout. Prefer to write us? Email <a class="coa-link" href="mailto:info@stackedbiologics.com">info@stackedbiologics.com</a> or use the live chat with the compound and quantity.</p></article>
+      <article class="card"><h3>2 &middot; We reach out for payment</h3><p>We reply within one business day with availability, your total, batch information, and payment instructions. No payment is taken up front — we arrange it directly with you.</p></article>
       <article class="card"><h3>3 &middot; Receive</h3><p>Orders process within 1 business day and ship with 2-day standard delivery, fully tracked. Every shipment carries a batch ID tied to its testing record. <a class="coa-link" href="#" id="expedite-chat" style="color:var(--brand-200)">Need it faster? Use the live chat for expedited help.</a></p></article>
     </div>
     <div class="grid cols-2" style="margin-top:32px">
@@ -71,16 +74,25 @@
       <article class="card"><h3>General inquiries</h3><p>Questions about handling, storage, or the catalog — we answer investigator questions directly.</p></article>
     </div>
 
-    <div class="help-now">
-      <div>
-        <h2>Want help now?</h2>
-        <p>Chat with us in real time — availability, batch questions, or placing an order. We're quick to reply.</p>
+    <div class="help-now help-now--form">
+      <div class="inquiry-intro">
+        <h2>Send us your inquiry</h2>
+        <p>Fill this out and we&rsquo;ll pick it up in live chat to confirm availability, total, and payment &mdash; usually within one business day. Prefer to talk now? <a href="#" id="open-chat" class="coa-link" style="color:var(--brand-200)">Open the live chat</a>.</p>
       </div>
-      <button type="button" class="btn btn-primary btn-lg" id="open-chat">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Start live chat
-      </button>
+      <form id="inquiry-form" class="inquiry-form" novalidate>
+        <div class="inquiry-row">
+          <label>Name<input type="text" name="name" autocomplete="name" required></label>
+          <label>Email<input type="email" name="email" autocomplete="email" required></label>
+        </div>
+        <label>What can we help with?<textarea name="message" rows="4" placeholder="Compound(s), quantity, and any questions"></textarea></label>
+        <button type="submit" class="btn btn-primary btn-lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Submit &amp; open chat
+        </button>
+        <p class="inquiry-note" id="inquiry-note" hidden></p>
+      </form>
     </div>
+
   </div>
 </section>
 </main>
@@ -99,7 +111,7 @@
       <div>
         <h4>Catalog</h4>
         <div class="foot-links">
-          <a href="glp3-rt40.html">GLP-3 RT40</a>
+          <a href="glp3-rt40.html">GLP3-RT</a>
           <a href="enclomiphene.html">Enclomiphene</a>
           <a href="bpc-157.html">BPC-157</a>
           <a href="ghk-cu.html">GHK-Cu</a>
@@ -130,15 +142,53 @@
   </div>
 </footer>
 
-<script src="app.js"></script>
+<script src="assets/app.js"></script>
 <script>
-document.getElementById('open-chat').addEventListener('click', function () {
+document.getElementById('open-chat').addEventListener('click', function (e) {
+  if (e) e.preventDefault();
   if (window.Tawk_API && typeof window.Tawk_API.maximize === 'function') {
     window.Tawk_API.maximize();
   } else {
     window.location.href = 'mailto:info@stackedbiologics.com?subject=Quote%20request';
   }
 });
+(function () {
+  var form = document.getElementById('inquiry-form');
+  if (!form) return;
+  var note = document.getElementById('inquiry-note');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = (form.name.value || '').trim();
+    var email = (form.email.value || '').trim();
+    var message = (form.message.value || '').trim();
+    if (!name || !/.+@.+\..+/.test(email)) {
+      note.hidden = false;
+      note.style.color = '#e0894f';
+      note.textContent = 'Please add your name and a valid email so we can follow up.';
+      return;
+    }
+    var body = 'New inquiry\nName: ' + name + '\nEmail: ' + email + '\nMessage: ' + (message || '(none)');
+    if (window.Tawk_API) {
+      try {
+        if (typeof window.Tawk_API.setAttributes === 'function') window.Tawk_API.setAttributes({ name: name, email: email }, function () {});
+        if (typeof window.Tawk_API.addTags === 'function') window.Tawk_API.addTags(['inquiry'], function () {});
+        if (typeof window.Tawk_API.addEvent === 'function') window.Tawk_API.addEvent('inquiry-submitted', { name: name, email: email, message: message }, function () {});
+      } catch (ex) {}
+    }
+    var copied = false;
+    try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(body); copied = true; } } catch (ex) {}
+    var chatOpened = false;
+    if (window.Tawk_API && typeof window.Tawk_API.maximize === 'function') { try { window.Tawk_API.maximize(); chatOpened = true; } catch (ex) {} }
+    form.reset();
+    note.hidden = false;
+    note.style.color = '';
+    note.textContent = chatOpened
+      ? (copied
+          ? 'Thanks, ' + name + ' — we’ve opened the live chat and copied your details. Paste them into the chat and send, and we’ll take it from there.'
+          : 'Thanks, ' + name + ' — we’ve opened the live chat. Send your note there and we’ll follow up.')
+      : 'Thanks, ' + name + ' — message us through the live chat in the bottom-right corner and we’ll follow up within one business day.';
+  });
+})();
 var ec = document.getElementById('expedite-chat');
 if (ec) ec.addEventListener('click', function (e) {
   e.preventDefault();
