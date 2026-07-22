@@ -1390,3 +1390,14 @@ a.product-card:hover h3 { color: var(--brand); }
 @media (max-width: 560px) {
   .help-now .btn { width: 100%; justify-content: center; }
 }
+
+/* Mobile backdrop: 16:9 art crops to its dark center on tall screens — pin to the gold edge */
+@media (max-width: 768px) {
+  body::before {
+    background-image:
+      linear-gradient(180deg, rgba(6,13,22,0.42), rgba(6,13,22,0.55)),
+      url('bg-molecular.png');
+    background-position: center, left 28% center;
+  }
+  .section--alt, .section--card-band { background: rgba(10,18,30,0.38); }
+}
