@@ -1446,6 +1446,36 @@ a.product-card:hover h3 { color: var(--brand); }
 .price-tiers .tier b { display: block; font-size: 1.25rem; color: var(--brand-200); font-weight: 700; }
 .price-tiers .tier.best { border-color: rgba(201,162,39,0.5); background: var(--brand-soft); }
 
+/* Venmo payment step (order confirmation) */
+.venmo-pay { margin-top: 14px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.venmo-pay .pay-banner {
+  width: 100%; box-sizing: border-box;
+  background: var(--brand); color: #0a1421;
+  font-weight: 800; font-size: 0.95rem; letter-spacing: 0.02em;
+  padding: 12px 14px; border-radius: 10px;
+  animation: payPulse 1.6s ease-in-out infinite;
+}
+@keyframes payPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(201,162,39,0.55); } 50% { box-shadow: 0 0 0 9px rgba(201,162,39,0); } }
+.venmo-pay .venmo-amt { margin: 0; font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.venmo-pay .venmo-amt b { display: block; font-size: 2.2rem; color: #fff; letter-spacing: 0; margin-top: 2px; }
+.venmo-pay .venmo-order { margin: 0; font-size: 0.9rem; color: var(--muted); }
+.venmo-pay .venmo-order b { color: var(--brand-200); letter-spacing: 0.04em; }
+.venmo-pay .pay-cta { width: 100%; box-sizing: border-box; height: 50px; font-size: 1rem; font-weight: 700; }
+.venmo-pay .venmo-qr { width: 280px; max-width: 92%; border-radius: 12px; display: block; }
+.venmo-pay .venmo-link { font-size: 0.95rem; font-weight: 700; color: var(--brand-200); text-decoration: underline; text-underline-offset: 3px; }
+.venmo-pay .venmo-link:hover { color: #f0d574; }
+.oos-btn { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.4); }
+.low-stock-note { margin: 12px 0 0; font-size: 0.9rem; font-weight: 700; color: #e0894f; }
+.venmo-pay .pay-note-box {
+  width: 100%; box-sizing: border-box;
+  border: 1.5px dashed rgba(201,162,39,0.6); border-radius: 10px;
+  background: rgba(201,162,39,0.08); padding: 12px 14px;
+  font-size: 0.95rem; color: #fff; line-height: 1.6;
+}
+.venmo-pay .pay-note-box span { font-size: 0.8rem; color: var(--muted); }
+.venmo-pay .venmo-hint { margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 300px; }
+.venmo-pay .venmo-hint b { color: var(--brand-200); }
+
 /* Inquiry form (how-to-order) */
 .help-now--form { display: block; }
 .inquiry-intro { max-width: 640px; margin: 0 auto 20px; text-align: center; }
@@ -1588,19 +1618,55 @@ body.discounts-locked .price-tiers .tier:not(:first-child) b { filter: blur(7px)
 .cl-remove:hover { color: #e0645a; }
 
 /* Checkout form */
-.checkout-view { display: flex; flex-direction: column; gap: 14px; }
+.checkout-view {
+  display: flex; flex-direction: column; gap: 14px;
+  border: 1px solid rgba(201,162,39,0.35); border-radius: 14px;
+  background: rgba(10,18,30,0.5); padding: 18px 16px;
+}
 .co-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); font-weight: 700; margin: 2px 0 2px; }
 .co-field { display: flex; flex-direction: column; gap: 6px; }
 .co-field > span { font-size: 0.82rem; color: var(--muted); font-weight: 560; }
 .co-field input, .co-field textarea {
   width: 100%; box-sizing: border-box;
   background: var(--ink-850); color: var(--on-dark);
-  border: 1px solid var(--line); border-radius: 10px;
-  padding: 11px 13px; font: inherit; font-size: 0.92rem;
+  border: 1.5px solid rgba(201,162,39,0.4); border-radius: 10px;
+  padding: 12px 14px; font: inherit; font-size: 0.95rem;
   resize: vertical;
 }
 .co-field input:focus, .co-field textarea:focus { outline: none; border-color: var(--brand); }
 .co-field .co-invalid, .co-invalid { border-color: #e0645a !important; }
+.co-row { display: grid; grid-template-columns: 1.6fr 0.7fr 1fr; gap: 10px; }
+@media (max-width: 480px) { .co-row { grid-template-columns: 1fr; } }
+.addr-suggest {
+  position: absolute; left: 0; right: 0; top: 100%; z-index: 40;
+  background: var(--ink-900); border: 1px solid rgba(201,162,39,0.4);
+  border-radius: 10px; overflow: hidden; box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column;
+}
+.addr-suggest[hidden] { display: none; }
+.addr-suggest-item {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  text-align: left; font: inherit; font-size: 0.85rem; color: var(--on-dark);
+  padding: 10px 12px; border-bottom: 1px solid rgba(201,162,39,0.15);
+}
+.addr-suggest-item:last-child { border-bottom: 0; }
+.addr-suggest-item:hover { background: rgba(201,162,39,0.12); }
+.addr-pop {
+  position: fixed; inset: 0; z-index: 2300; display: flex; align-items: center; justify-content: center;
+  background: rgba(4,9,17,0.7); backdrop-filter: blur(2px); padding: 20px;
+}
+.addr-pop-card {
+  background: var(--ink-900); border: 1px solid rgba(201,162,39,0.45); border-radius: 14px;
+  max-width: 430px; width: 100%; padding: 24px 22px; text-align: center;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+}
+.addr-pop-card h3 { margin: 0 0 10px; font-size: 1.1rem; color: #fff; }
+.addr-pop-addr { margin: 0 0 10px; font-weight: 600; color: var(--brand-200); }
+.addr-pop-sub { margin: 0 0 18px; font-size: 0.9rem; color: var(--muted); line-height: 1.55; }
+.addr-pop-btns { display: flex; flex-direction: column; gap: 10px; }
+.co-addr-note { font-size: 0.82rem; line-height: 1.5; margin: 4px 0 0; }
+.co-addr-note.ok { color: #7fc98a; }
+.co-addr-note.warn { color: #e0894f; }
 .co-note { font-size: 0.78rem; color: var(--subtle); line-height: 1.5; margin: 2px 0 0; }
 
 /* Sent confirmation */

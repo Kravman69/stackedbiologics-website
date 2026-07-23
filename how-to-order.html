@@ -58,7 +58,7 @@
     </nav>
     <span class="badge-ruo">Qualified researchers &amp; institutions</span>
     <h1>How to order</h1>
-    <p class="class-line">Order through the cart — add your compounds and check out. Questions? Email us below. We reply within one business day.</p>
+    <p class="class-line">Order through the cart — add your compounds, check out, and pay by Venmo with the order number we give you. Questions? Email us below. We reply within one business day.</p>
   </div>
 </section>
 
@@ -66,7 +66,7 @@
   <div class="container narrow">
     <div class="grid cols-3">
       <article class="card"><h3>1 &middot; Submit</h3><p>Add your compounds to the cart and check out.</p></article>
-      <article class="card"><h3>2 &middot; Confirm</h3><p>We reply within one business day with your total and payment instructions — nothing is charged up front.</p></article>
+      <article class="card"><h3>2 &middot; Pay</h3><p>At checkout you get an order number and our Venmo QR code (<b>@ProjectStacked</b>). Put your name and order number in the Venmo notes.</p></article>
       <article class="card"><h3>3 &middot; Receive</h3><p>Ships in 1 business day, 2-day tracked delivery. <a class="coa-link" href="#" id="expedite-chat" style="color:var(--brand-200)">Need it faster? Live chat.</a></p></article>
     </div>
 
@@ -164,6 +164,24 @@ document.getElementById('open-chat').addEventListener('click', function (e) {
       return;
     }
     var body = 'New inquiry\nName: ' + name + '\nEmail: ' + email + '\nMessage: ' + (message || '(none)');
+    note.hidden = false;
+    note.style.color = '';
+    note.textContent = 'Sending…';
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ access_key: 'faaef774-7050-4340-a58c-805562ce6867', subject: 'Inquiry — ' + name, from_name: 'Stacked Biologics Site', name: name, email: email, message: message || '(none)' })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.success === true) {
+        form.reset();
+        note.textContent = 'Thanks, ' + name + ' — we’ve received your question and will reply to ' + email + ' within one business day.';
+      } else { fallbackMail(); }
+    }).catch(fallbackMail);
+    function fallbackMail() {
+      window.location.href = 'mailto:info@stackedbiologics.com?subject=' + encodeURIComponent('Inquiry — ' + name) + '&body=' + encodeURIComponent(body);
+      form.reset();
+      note.textContent = 'Thanks, ' + name + ' — your email app should open with your question addressed to info@stackedbiologics.com. Just hit send.';
+    }
     if (window.Tawk_API) {
       try {
         if (typeof window.Tawk_API.setAttributes === 'function') window.Tawk_API.setAttributes({ name: name, email: email }, function () {});
@@ -171,13 +189,6 @@ document.getElementById('open-chat').addEventListener('click', function (e) {
         if (typeof window.Tawk_API.addEvent === 'function') window.Tawk_API.addEvent('inquiry-submitted', { name: name, email: email, message: message }, function () {});
       } catch (ex) {}
     }
-    var copied = false;
-    try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(body); copied = true; } } catch (ex) {}
-    window.location.href = 'mailto:info@stackedbiologics.com?subject=' + encodeURIComponent('Inquiry — ' + name) + '&body=' + encodeURIComponent(body);
-    form.reset();
-    note.hidden = false;
-    note.style.color = '';
-    note.textContent = 'Thanks, ' + name + ' — your email app should open with your inquiry addressed to info@stackedbiologics.com. Just hit send and we’ll reply within one business day.';
   });
 })();
 var ec = document.getElementById('expedite-chat');

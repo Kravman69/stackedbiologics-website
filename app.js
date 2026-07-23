@@ -103,9 +103,15 @@
           '</div>' +
           '<form class="checkout-view" hidden novalidate>' +
             '<p class="co-eyebrow">Shipping details</p>' +
-            '<label class="co-field"><span>Full name</span><input name="name" autocomplete="name" required></label>' +
-            '<label class="co-field"><span>Email</span><input name="email" type="email" autocomplete="email" required></label>' +
-            '<label class="co-field"><span>Shipping address</span><textarea name="address" rows="4" autocomplete="street-address" placeholder="Street, city, state, ZIP" required></textarea></label>' +
+            '<label class="co-field"><span>Full name *</span><input name="name" autocomplete="name" required></label>' +
+            '<label class="co-field"><span>Email *</span><input name="email" type="email" autocomplete="email" required></label>' +
+            '<label class="co-field"><span>Phone (optional)</span><input name="phone" type="tel" autocomplete="tel" placeholder="For delivery questions only"></label>' +
+            '<label class="co-field"><span>Street address *</span><input name="street" autocomplete="address-line1" placeholder="123 Main St, Apt 4" required></label>' +
+            '<div class="co-row">' +
+              '<label class="co-field"><span>City *</span><input name="city" autocomplete="address-level2" required></label>' +
+              '<label class="co-field co-state"><span>State *</span><input name="state" autocomplete="address-level1" maxlength="2" placeholder="TX" required></label>' +
+              '<label class="co-field co-zip"><span>ZIP *</span><input name="zip" autocomplete="postal-code" inputmode="numeric" maxlength="10" required></label>' +
+            '</div>' +
             '<p class="co-note">All products are for laboratory research use only. By ordering you confirm you are 21+ and a qualified researcher.</p>' +
           '</form>' +
           '<div class="cart-sent" hidden>' +
@@ -202,24 +208,91 @@
   function sendOrder() {
     var name = (coForm.querySelector('[name=name]').value || '').trim();
     var email = (coForm.querySelector('[name=email]').value || '').trim();
-    var addr = (coForm.querySelector('[name=address]').value || '').trim();
+    var phone = (coForm.querySelector('[name=phone]').value || '').trim();
+    var street = (coForm.querySelector('[name=street]').value || '').trim();
+    var city = (coForm.querySelector('[name=city]').value || '').trim();
+    var state = (coForm.querySelector('[name=state]').value || '').trim();
+    var zip = (coForm.querySelector('[name=zip]').value || '').trim();
     var bad = false;
-    [['name', name], ['email', email], ['address', addr]].forEach(function (f) {
-      var el = coForm.querySelector('[name=' + f[0] + ']');
-      var ok = f[0] === 'email' ? /.+@.+\..+/.test(f[1]) : !!f[1];
-      el.classList.toggle('co-invalid', !ok);
-      if (!ok) bad = true;
+    var checks = {
+      name: !!name,
+      email: /.+@.+\..+/.test(email),
+      street: !!street,
+      city: !!city,
+      state: /^[A-Za-z]{2}$/.test(state),
+      zip: /^\d{5}(-\d{4})?$/.test(zip)
+    };
+    Object.keys(checks).forEach(function (k) {
+      var el = coForm.querySelector('[name=' + k + ']');
+      el.classList.toggle('co-invalid', !checks[k]);
+      if (!checks[k]) bad = true;
     });
     if (bad) return;
+    var addr = street + ', ' + city + ', ' + state.toUpperCase() + ' ' + zip + (phone ? '\nPhone: ' + phone : '');
+    var geoAddr = street + ', ' + city + ', ' + state.toUpperCase() + ' ' + zip;
+    var addrEl = coForm.querySelector('[name=zip]');
+    var noteEl = coForm.querySelector('.co-addr-note');
+    if (!noteEl) { noteEl = document.createElement('p'); noteEl.className = 'co-addr-note'; coForm.querySelector('.co-row').insertAdjacentElement('afterend', noteEl); }
+    if (window.__sbAddrPass !== geoAddr) {
+      noteEl.className = 'co-addr-note'; noteEl.textContent = 'Checking address\u2026';
+      var sendBtn = drawer.querySelector('.cart-send'); if (sendBtn) sendBtn.disabled = true;
+      fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=' + encodeURIComponent(geoAddr))
+        .then(function (r) { return r.json(); })
+        .then(function (results) {
+          if (sendBtn) sendBtn.disabled = false;
+          if (results && results.length) {
+            window.__sbAddrPass = geoAddr;
+            noteEl.className = 'co-addr-note ok';
+            noteEl.textContent = '\u2713 Address found: ' + results[0].display_name.slice(0, 90);
+            reallySend(name, email, addr);
+          } else {
+            noteEl.className = 'co-addr-note warn';
+            noteEl.textContent = 'Address not verified.';
+            showAddrPopup(geoAddr, function () { reallySend(name, email, addr); });
+          }
+        })
+        .catch(function () {
+          if (sendBtn) sendBtn.disabled = false;
+          window.__sbAddrPass = geoAddr;
+          reallySend(name, email, addr);
+        });
+      return;
+    }
+    reallySend(name, email, addr);
+  }
+
+  function showAddrPopup(addrText, onUseAnyway) {
+    var pop = document.createElement('div');
+    pop.className = 'addr-pop';
+    pop.innerHTML =
+      '<div class="addr-pop-card" role="alertdialog" aria-labelledby="addr-pop-title">' +
+        '<h3 id="addr-pop-title">We couldn\u2019t verify this address</h3>' +
+        '<p class="addr-pop-addr">' + esc(addrText) + '</p>' +
+        '<p class="addr-pop-sub">It may still be correct \u2014 but a typo here means your package can\u2019t be delivered. Please double-check the street, city, state, and ZIP.</p>' +
+        '<div class="addr-pop-btns">' +
+          '<button type="button" class="btn btn-primary addr-pop-edit">Let me fix it</button>' +
+          '<button type="button" class="btn btn-ghost addr-pop-use">It\u2019s correct \u2014 use as written</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(pop);
+    pop.querySelector('.addr-pop-edit').addEventListener('click', function () { pop.remove(); });
+    pop.querySelector('.addr-pop-use').addEventListener('click', function () { pop.remove(); onUseAnyway(); });
+    pop.addEventListener('click', function (e) { if (e.target === pop) pop.remove(); });
+  }
+
+  function reallySend(name, email, addr) {
+    var orderNo = 'SB-' + Date.now().toString(36).toUpperCase().slice(-6) + Math.floor(Math.random() * 36).toString(36).toUpperCase();
+    var total = money(subtotal());
 
     var lines = cart.map(function (i) {
       return '  \u2022 ' + i.name + '  \u00d7 ' + i.qty + '   = ' + money(lineTotal(i));
     }).join('\n');
     var rule = '----------------------------------------';
     var body =
-      'NEW ORDER \u2014 Stacked Biologics\n' + rule + '\n' + lines + '\n' + rule +
+      'NEW ORDER ' + orderNo + ' \u2014 Stacked Biologics\n' + rule + '\n' + lines + '\n' + rule +
       '\nSubtotal: ' + money(subtotal()) + '\n\n' +
       'CUSTOMER\nName: ' + name + '\nEmail: ' + email + '\nShip to:\n' + addr + '\n\n' +
+      'PAYMENT: Venmo @ProjectStacked \u2014 notes must include: ' + name + ' / ' + orderNo + '\n\n' +
       'Research use only. Buyer confirms they are 21+ and a qualified researcher.';
 
     if (window.Tawk_API) {
@@ -232,38 +305,59 @@
       } catch (ex) {}
     }
     var copied = false;
-    try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(body); copied = true; } } catch (ex) {}
-    var subject = 'New order \u2014 ' + name + ' (' + count() + ' item' + (count() === 1 ? '' : 's') + ', ' + money(subtotal()) + ')';
+    try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(body).then(function(){ copied = true; }).catch(function(){}); } } catch (ex) {}
+    var subject = 'New order ' + orderNo + ' \u2014 ' + name + ' (' + count() + ' item' + (count() === 1 ? '' : 's') + ', ' + money(subtotal()) + ')';
 
-    // Send directly to info@ via FormSubmit relay; customer gets an email receipt copy.
+    // Order to info@ via Web3Forms (reliable); receipt to customer via FormSubmit autoresponse (best-effort).
     var sentOk = false;
     var payload = {
-      _subject: subject,
-      _template: 'box',
-      _captcha: 'false',
-      _autoresponse: 'Thanks for your order with Stacked Biologics \u2014 this is your receipt copy. We\u2019ll reply within one business day with your total and payment instructions.\n\n' + body,
-      _replyto: email,
+      access_key: 'faaef774-7050-4340-a58c-805562ce6867',
+      subject: subject,
+      from_name: 'Stacked Biologics Orders',
       name: name,
       email: email,
+      order_number: orderNo,
       shipping_address: addr,
-      order: body
+      message: body
     };
-    fetch('https://formsubmit.co/ajax/info@stackedbiologics.com', {
+    try {
+      fetch('https://formsubmit.co/ajax/cf1eadf38a23f20c76285c47d72a1ce1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ _subject: subject + ' (receipt copy)', _captcha: 'false',
+          _autoresponse: 'Thanks for your order with Stacked Biologics!\n\nYOUR ORDER NUMBER: ' + orderNo + '\n\nTO PAY: Venmo @ProjectStacked \u2014 put your name (' + name + ') and order number (' + orderNo + ') in the Venmo payment notes.\nPay here: https://www.paypal.com/qrcodes/venmocs/f33c0f30-84b1-42a4-8f05-6f88e7670e8b\n\nWe confirm payment and ship within 1 business day (2-day tracked delivery).\n\n' + body,
+          _replyto: email, email: email, order: body })
+      });
+    } catch (ex) {}
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
     }).then(function (r) { return r.json(); }).then(function (d) {
-      sentOk = d && (d.success === 'true' || d.success === true);
+      sentOk = d && d.success === true;
       showSentMsg(sentOk);
     }).catch(function () { showSentMsg(false); });
 
     function showSentMsg(ok) {
       var msg = drawer.querySelector('.cart-sent p');
       var h = drawer.querySelector('.cart-sent h3');
-      if (h) h.textContent = ok ? 'Order received' : 'Almost there';
+      if (h) h.textContent = ok ? 'Order received — now submit payment' : 'Almost there';
       if (!msg) return;
       if (ok) {
-        msg.textContent = 'Order received! A receipt has been emailed to ' + email + '. We\u2019ll reply within one business day with your total and payment instructions.';
+        msg.innerHTML = 'A receipt has been emailed to <b>' + esc(email) + '</b>.';
+        var pay = document.createElement('div');
+        pay.className = 'venmo-pay';
+        pay.innerHTML =
+          '<div class="pay-banner">\u26A0 Your order ships after payment \u2014 pay now</div>' +
+          '<p class="venmo-amt">Amount due<br><b>' + total + '</b></p>' +
+          '<p class="venmo-order">Order <b>' + orderNo + '</b></p>' +
+          '<a class="btn btn-primary pay-cta" href="https://www.paypal.com/qrcodes/venmocs/f33c0f30-84b1-42a4-8f05-6f88e7670e8b" target="_blank" rel="noopener">Pay ' + total + ' with Venmo \u2192 @ProjectStacked</a>' +
+          '<p class="venmo-hint">or scan the code:</p>' +
+          '<a href="https://www.paypal.com/qrcodes/venmocs/f33c0f30-84b1-42a4-8f05-6f88e7670e8b" target="_blank" rel="noopener"><img src="venmo-qr.png" alt="Venmo QR code for @ProjectStacked" class="venmo-qr"></a>' +
+          '<a class="venmo-link" href="https://venmo.com/u/ProjectStacked" target="_blank" rel="noopener">Open @ProjectStacked in the Venmo app \u2192</a>' +
+          '<div class="pay-note-box"><b>In the Venmo notes, send this exactly as written:</b><br>' + esc(name) + ' \u2014 ' + orderNo + '<br><span>This is how we match your payment to your order.</span></div>' +
+          '<p class="venmo-hint">Prefer <b>Zelle</b> or <b>Cash App</b>? Message us in the live chat or reply to your receipt email and we\u2019ll send the details.</p>';
+        msg.insertAdjacentElement('afterend', pay);
       } else {
         var subj = encodeURIComponent(subject), bd = encodeURIComponent(body);
         msg.textContent = 'We couldn\u2019t reach the order service \u2014 your email app should open with the full order instead; just hit send.' + (copied ? ' (It\u2019s also copied to your clipboard.)' : '');
@@ -294,7 +388,7 @@
     if (!drawer) return;
     drawer.classList.remove('open');
     document.body.style.overflow = '';
-    setTimeout(function () { if (!drawer.classList.contains('open')) showCartView(); }, 250);
+    setTimeout(function () { if (!drawer.classList.contains('open')) { var vp = drawer.querySelector('.venmo-pay'); if (vp) vp.remove(); showCartView(); } }, 250);
   }
 
   document.addEventListener('click', function (e) {
@@ -326,9 +420,108 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
 
+  // Address autosuggest on the street field (Nominatim, debounced)
+  var US_ST = {'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA','colorado':'CO','connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA','hawaii':'HI','idaho':'ID','illinois':'IL','indiana':'IN','iowa':'IA','kansas':'KS','kentucky':'KY','louisiana':'LA','maine':'ME','maryland':'MD','massachusetts':'MA','michigan':'MI','minnesota':'MN','mississippi':'MS','missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV','new hampshire':'NH','new jersey':'NJ','new mexico':'NM','new york':'NY','north carolina':'NC','north dakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR','pennsylvania':'PA','rhode island':'RI','south carolina':'SC','south dakota':'SD','tennessee':'TN','texas':'TX','utah':'UT','vermont':'VT','virginia':'VA','washington':'WA','west virginia':'WV','wisconsin':'WI','wyoming':'WY','district of columbia':'DC'};
+  var sugTimer, sugBox;
+  document.addEventListener('input', function (e) {
+    var st = e.target;
+    if (!st.name || st.name !== 'street' || !st.closest('.checkout-view')) return;
+    clearTimeout(sugTimer);
+    var q = st.value.trim();
+    if (q.length < 5) { if (sugBox) sugBox.hidden = true; return; }
+    sugTimer = setTimeout(function () {
+      fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=4&countrycodes=us&q=' + encodeURIComponent(q))
+        .then(function (r) { return r.json(); })
+        .then(function (results) {
+          if (!sugBox) {
+            sugBox = document.createElement('div');
+            sugBox.className = 'addr-suggest';
+            st.parentNode.style.position = 'relative';
+            st.parentNode.appendChild(sugBox);
+          }
+          if (!results || !results.length) { sugBox.hidden = true; return; }
+          sugBox.innerHTML = '';
+          results.forEach(function (res) {
+            var a = res.address || {};
+            var road = ((a.house_number ? a.house_number + ' ' : '') + (a.road || '')).trim();
+            if (!road) return;
+            var cityV = a.city || a.town || a.village || a.hamlet || '';
+            var stAbbr = US_ST[String(a.state || '').toLowerCase()] || '';
+            var item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'addr-suggest-item';
+            item.textContent = res.display_name.length > 72 ? res.display_name.slice(0, 72) + '\u2026' : res.display_name;
+            item.addEventListener('click', function () {
+              var form = st.closest('.checkout-view');
+              st.value = road;
+              if (cityV) form.querySelector('[name=city]').value = cityV;
+              if (stAbbr) form.querySelector('[name=state]').value = stAbbr;
+              if (a.postcode) form.querySelector('[name=zip]').value = a.postcode.slice(0, 10);
+              sugBox.hidden = true;
+            });
+            sugBox.appendChild(item);
+          });
+          sugBox.hidden = sugBox.children.length === 0;
+        }).catch(function () { if (sugBox) sugBox.hidden = true; });
+    }, 450);
+  });
+  document.addEventListener('click', function (e) {
+    if (sugBox && !e.target.closest('.addr-suggest') && !(e.target.name === 'street')) sugBox.hidden = true;
+  });
+
   buildBtn();
   render();
   window.addEventListener('sb-unlocked', render);
+})();
+
+// Live stock from Google Sheet (read-only; fails silent -> site shows baked-in state)
+(function () {
+  var SHEET = 'https://docs.google.com/spreadsheets/d/1x-R4Hz-FSXOfbepuhZ862iFHHJFiEJs6RziRlnw4-BM/gviz/tq?tqx=out:csv';
+  function norm(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+  fetch(SHEET).then(function (r) { return r.text(); }).then(function (csv) {
+    var rows = csv.trim().split('\n').map(function (line) {
+      var f = []; var m; var re = /"([^"]*)"/g;
+      while ((m = re.exec(line))) f.push(m[1].trim());
+      return f;
+    });
+    var head = rows.shift().map(norm);
+    var iId = head.indexOf('id'), iStock = head.indexOf('instock'), iQty = head.indexOf('quantity');
+    if (iId < 0 || iStock < 0) return;
+    var stock = {};
+    rows.forEach(function (r) {
+      if (!r[iId]) return;
+      stock[norm(r[iId])] = { ok: norm(r[iStock]) === 'yes', qty: iQty >= 0 ? parseInt(r[iQty], 10) : NaN };
+    });
+    function lookup(id) { return stock[norm(id)]; }
+
+    document.querySelectorAll('.order-btn').forEach(function (b) {
+      var s = lookup(b.getAttribute('data-id') || b.getAttribute('data-product'));
+      if (!s) return;
+      if (!s.ok || s.qty === 0) {
+        b.disabled = true; b.classList.add('oos-btn'); b.textContent = 'Out of stock';
+      } else if (s.qty > 0 && s.qty <= 5 && !document.querySelector('.low-stock-note')) {
+        var n = document.createElement('p');
+        n.className = 'low-stock-note';
+        n.textContent = 'Low stock \u2014 only ' + s.qty + ' left';
+        var strip = document.querySelector('.price-tiers');
+        if (strip) strip.insertAdjacentElement('beforebegin', n);
+      }
+    });
+
+    document.querySelectorAll('a.product-card[href]').forEach(function (card) {
+      var s = lookup((card.getAttribute('href') || '').replace('.html', ''));
+      if (!s) return;
+      if (!s.ok || s.qty === 0) {
+        card.classList.add('is-soon');
+        var more = card.querySelector('.pc-more'); if (more) { more.classList.add('muted'); more.textContent = 'Out of stock'; }
+        var top = card.querySelector('.pc-top > div');
+        if (top && !top.querySelector('.tag.soon')) {
+          var t = document.createElement('span'); t.className = 'tag soon'; t.textContent = 'Out of stock';
+          top.appendChild(t);
+        }
+      }
+    });
+  }).catch(function () {});
 })();
 
 // Signup band -> tawk.to Contacts
@@ -405,6 +598,13 @@
         if (typeof window.Tawk_API.addEvent === 'function') window.Tawk_API.addEvent('discount-unlock', { email: email }, function () {});
       } catch (ex) {}
     }
+    try {
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ access_key: 'faaef774-7050-4340-a58c-805562ce6867', subject: 'Discount signup \u2014 ' + email, from_name: 'Stacked Biologics Site', signup_email: email, message: 'Discount signup: ' + email + ' (page: ' + location.pathname + ')' })
+      });
+    } catch (ex) {}
     try { localStorage.setItem(KEY, email); } catch (e) {}
     document.body.classList.remove('discounts-locked');
     document.querySelectorAll('.unlock-btn').forEach(function (b) {
