@@ -20,11 +20,11 @@
     exitUrl: "https://www.google.com",
     termsUrl: "disclaimer.html",
     storageKey: "sb-ruo-gate",
-    version: "2026-07e",
+    version: "2026-07g",
     persist: false,
-    introSrc: "grok_video_2026-07-10-20-01-11.mp4",
+    introSrc: "sb-intro.mp4",
     introPoster: "sb-intro-poster.jpg",
-    introKey: "sb-intro-2026-07",
+    introKey: "sb-intro-2026-09",
     introMaxMs: 8000
   };
 
@@ -139,7 +139,7 @@
 
     var started = false;
     video.addEventListener("playing", function () { started = true; });
-    setTimeout(function () { if (!started) end(); }, 1500);
+    setTimeout(function () { if (!started) end(); }, 4000);
     setTimeout(end, CONFIG.introMaxMs);
     var p = video.play();
     if (p && p.catch) p.catch(function () { end(); });

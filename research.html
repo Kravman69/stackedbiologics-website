@@ -36,7 +36,7 @@
       <a href="index.html">Home</a>
       <a href="index.html#catalog">Catalog</a>
       <a href="lab-results.html">COA&rsquo;s</a>
-      <a href="research.html" aria-current="page">Research</a>
+      <a href="research.html" aria-current="page">Library</a>
       <a href="about.html">About</a>
       <a href="how-to-order.html">How to Order</a>
     </nav>
@@ -51,7 +51,7 @@
   <a href="index.html">Home</a>
   <a href="index.html#catalog">Catalog</a>
   <a href="lab-results.html">COA&rsquo;s</a>
-  <a href="research.html" aria-current="page">Research</a>
+  <a href="research.html" aria-current="page">Library</a>
   <a href="about.html">About</a>
   <a href="how-to-order.html">How to order</a>
   <a href="disclaimer.html">Disclaimer</a>
@@ -71,14 +71,32 @@
   </div>
 </section>
 
+<section class="section tight" style="padding-bottom:0">
+  <div class="container narrow">
+    <div class="lit-tools">
+      <input id="lit-search" class="lit-search" type="search" placeholder="Search compounds or references…" aria-label="Search research library">
+      <div class="cat-filter" style="margin-bottom:0">
+        <button class="cf-chip lit-chip active" type="button" data-cat="all">All</button>
+        <button class="cf-chip lit-chip" type="button" data-cat="metabolic">Metabolic</button>
+        <button class="cf-chip lit-chip" type="button" data-cat="hormone">Hormone</button>
+        <button class="cf-chip lit-chip" type="button" data-cat="mito">Mitochondrial</button>
+        <button class="cf-chip lit-chip" type="button" data-cat="nootropic">Nootropic</button>
+        <button class="cf-chip lit-chip" type="button" data-cat="tissue">Tissue &amp; Recovery</button>
+        <button class="cf-chip lit-chip" type="button" data-cat="pigment">Pigmentation</button>
+      </div>
+      <p class="lit-empty" id="lit-empty" hidden>No compounds match your search.</p>
+    </div>
+  </div>
+</section>
+
 <section class="section tight">
   <div class="container narrow">
-    <div class="lit-entry" id="glp3-rt40">
-      <div class="prose-block" style="margin-bottom:0">
-        <div class="lit-head">
-          <h2>GLP3-RT (LY-3437943)</h2>
-          <span class="lit-tag">Metabolic · triple agonist</span>
-        </div>
+    <details class="lit-acc" id="glp3-rt40" data-cat="metabolic" data-name="glp3-rt (ly-3437943)">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">GLP3-RT (LY-3437943)</span><span class="lit-tag">Metabolic · triple agonist</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
         <p class="lit-intro">A triple agonist of the GLP-1, GIP, and glucagon receptors that has been evaluated in randomized clinical trials for metabolic endpoints. The references below are published, peer-reviewed sources describing that work.</p>
         <ul class="ref-list">
         <li class="ref-item">
@@ -95,13 +113,13 @@
         </li>
         </ul>
       </div>
-    </div>
-    <div class="lit-entry" id="enclomiphene">
-      <div class="prose-block" style="margin-bottom:0">
-        <div class="lit-head">
-          <h2>Enclomiphene</h2>
-          <span class="lit-tag">Endocrine · SERM</span>
-        </div>
+    </details>
+    <details class="lit-acc" id="enclomiphene" data-cat="hormone" data-name="enclomiphene">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">Enclomiphene</span><span class="lit-tag">Endocrine · SERM</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
         <p class="lit-intro">The <em>trans</em>-isomer of clomiphene, a selective estrogen receptor modulator studied in phase II clinical trials for endocrine endpoints. Published references below.</p>
         <ul class="ref-list">
         <li class="ref-item">
@@ -118,13 +136,13 @@
         </li>
         </ul>
       </div>
-    </div>
-    <div class="lit-entry" id="bpc-157">
-      <div class="prose-block" style="margin-bottom:0">
-        <div class="lit-head">
-          <h2>BPC-157</h2>
-          <span class="lit-tag">Peptide · preclinical</span>
-        </div>
+    </details>
+    <details class="lit-acc" id="bpc-157" data-cat="tissue" data-name="bpc-157">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">BPC-157</span><span class="lit-tag">Peptide · preclinical</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
         <p class="lit-intro">A synthetic pentadecapeptide examined largely in preclinical (animal and in-vitro) models of tissue response. Published references and a recent systematic review below.</p>
         <ul class="ref-list">
         <li class="ref-item">
@@ -141,13 +159,13 @@
         </li>
         </ul>
       </div>
-    </div>
-    <div class="lit-entry" id="ghk-cu">
-      <div class="prose-block" style="margin-bottom:0">
-        <div class="lit-head">
-          <h2>GHK-Cu (Copper Tripeptide-1)</h2>
-          <span class="lit-tag">Copper tripeptide · matrix biology</span>
-        </div>
+    </details>
+    <details class="lit-acc" id="ghk-cu" data-cat="tissue nootropic" data-name="ghk-cu (copper tripeptide-1)">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">GHK-Cu (Copper Tripeptide-1)</span><span class="lit-tag">Copper tripeptide · matrix biology</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">5 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
         <p class="lit-intro">A copper-binding tripeptide studied since the 1970s in extracellular-matrix, wound-healing, and gene-expression contexts. Published references below.</p>
         <ul class="ref-list">
         <li class="ref-item">
@@ -172,7 +190,160 @@
         </li>
         </ul>
       </div>
-    </div>
+    </details>
+    <details class="lit-acc" id="tb500" data-cat="tissue" data-name="tb-500 (thymosin β4 fragment)">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">TB-500 (Thymosin β4 fragment)</span><span class="lit-tag">Tissue &amp; recovery · peptide</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
+        <p class="lit-intro">A synthetic fragment of thymosin β4, an actin-binding protein studied largely in preclinical models of tissue repair, angiogenesis, and cell migration. Published references below.</p>
+        <ul class="ref-list">
+        <li class="ref-item">
+          <div class="ref-cite">Goldstein AL, Hannappel E, Kleinman HK. Thymosin β4: actin-sequestering protein moonlights to repair injured tissues. <span class="ref-jrnl">Trends Mol Med.</span> 2005;11(9):421–429.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/16099219/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Malinda KM, Sidhu GS, Mani H, et al. Thymosin β4 accelerates wound healing. <span class="ref-jrnl">J Invest Dermatol.</span> 1999;113(3):364–368.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/10469335/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Bock-Marquette I, Saxena A, White MD, et al. Thymosin β4 activates integrin-linked kinase and promotes cardiac cell migration, survival and cardiac repair. <span class="ref-jrnl">Nature.</span> 2004;432(7016):466–472.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/15565145/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        </ul>
+      </div>
+    </details>
+    <details class="lit-acc" id="kpv" data-cat="tissue" data-name="kpv (lys-pro-val)">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">KPV (Lys-Pro-Val)</span><span class="lit-tag">Peptide &middot; anti-inflammatory</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
+        <p class="lit-intro">The C-terminal tripeptide of &alpha;-MSH, studied largely in preclinical models of inflammation and mucosal biology. Published references below.</p>
+        <ul class="ref-list">
+        <li class="ref-item">
+          <div class="ref-cite">Dalmasso G, Charrier-Hisamuddin L, Nguyen HTT, et al. PepT1-mediated tripeptide KPV uptake reduces intestinal inflammation. <span class="ref-jrnl">Gastroenterology.</span> 2008;134(1):166&ndash;178.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/18061177/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Kannengiesser K, Maaser C, Heidemann J, et al. Melanocortin-derived tripeptide KPV has anti-inflammatory potential in murine models of inflammatory bowel disease. <span class="ref-jrnl">Inflamm Bowel Dis.</span> 2008;14(3):324&ndash;331.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/18092346/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Cutuli M, Cristiani S, Lipton JM, Catania A. Antimicrobial effects of &alpha;-MSH peptides. <span class="ref-jrnl">J Leukoc Biol.</span> 2000;67(2):233&ndash;239.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/10670585/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        </ul>
+      </div>
+    </details>
+    <details class="lit-acc" id="motsc" data-cat="mito" data-name="mots-c">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">MOTS-c</span><span class="lit-tag">Mitochondrial · metabolic</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
+        <p class="lit-intro">A mitochondrial-derived peptide studied in preclinical models of metabolic regulation, insulin sensitivity, and exercise physiology. Published references below.</p>
+        <ul class="ref-list">
+        <li class="ref-item">
+          <div class="ref-cite">Lee C, Zeng J, Drew BG, et al. The mitochondrial-derived peptide MOTS-c promotes metabolic homeostasis and reduces obesity and insulin resistance. <span class="ref-jrnl">Cell Metab.</span> 2015;21(3):443–454.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/25738459/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Reynolds JC, Lai RW, Woodhead JST, et al. MOTS-c is an exercise-induced mitochondrial-encoded regulator of age-dependent physical decline and muscle homeostasis. <span class="ref-jrnl">Nat Commun.</span> 2021;12(1):470.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/33473109/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Kim KH, Son JM, Benayoun BA, Lee C. The mitochondrial-encoded peptide MOTS-c translocates to the nucleus to regulate nuclear gene expression in response to metabolic stress. <span class="ref-jrnl">Cell Metab.</span> 2018;28(3):516–524.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/29983246/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        </ul>
+      </div>
+    </details>
+    <details class="lit-acc" id="ss31" data-cat="mito" data-name="ss-31 (elamipretide)">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">SS-31 (Elamipretide)</span><span class="lit-tag">Mitochondrial · cardiolipin</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
+        <p class="lit-intro">A mitochondria-targeting tetrapeptide studied for its interaction with cardiolipin and mitochondrial bioenergetics, including early clinical work. Published references below.</p>
+        <ul class="ref-list">
+        <li class="ref-item">
+          <div class="ref-cite">Szeto HH. First-in-class cardiolipin-protective compound as a therapeutic agent to restore mitochondrial bioenergetics. <span class="ref-jrnl">Br J Pharmacol.</span> 2014;171(8):2029–2050.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/24117165/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Birk AV, Liu S, Soong Y, et al. The mitochondrial-targeted compound SS-31 re-energizes ischemic mitochondria by interacting with cardiolipin. <span class="ref-jrnl">J Am Soc Nephrol.</span> 2013;24(8):1250–1261.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/23813215/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Chatfield KC, Sparagna GC, Chau S, et al. Elamipretide improves mitochondrial function in the failing human heart. <span class="ref-jrnl">JACC Basic Transl Sci.</span> 2019;4(2):147–157.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/31061916/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        </ul>
+      </div>
+    </details>
+    <details class="lit-acc" id="selank" data-cat="nootropic" data-name="selank">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">Selank</span><span class="lit-tag">Nootropic · anxiolytic</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">2 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
+        <p class="lit-intro">A synthetic heptapeptide derived from the immunomodulatory peptide tuftsin, studied in anxiety and neuropeptide-signaling contexts, including clinical work. Published references below.</p>
+        <ul class="ref-list">
+        <li class="ref-item">
+          <div class="ref-cite">Zozulia AA, Neznamov GG, Siuniakov TS, et al. Efficacy and possible mechanisms of action of a new peptide anxiolytic selank in generalized anxiety disorders and neurasthenia. <span class="ref-jrnl">Zh Nevrol Psikhiatr Im S S Korsakova.</span> 2008;108(4):38–48.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/18577961/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Volkova A, Shadrina M, Kolomin T, et al. Selank administration affects the expression of some genes involved in GABAergic neurotransmission. <span class="ref-jrnl">Front Pharmacol.</span> 2016;7:31.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/26941643/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        </ul>
+      </div>
+    </details>
+    <details class="lit-acc" id="semax" data-cat="nootropic" data-name="semax">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">Semax</span><span class="lit-tag">Nootropic · neurotrophic</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">2 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
+        <p class="lit-intro">A synthetic analog of the ACTH(4–10) fragment, studied in cognition, neuroprotection, and BDNF-signaling contexts. Published references below.</p>
+        <ul class="ref-list">
+        <li class="ref-item">
+          <div class="ref-cite">Dolotov OV, Karpenko EA, Inozemtseva LS, et al. Semax, an analog of ACTH(4–10), binds specifically and increases levels of brain-derived neurotrophic factor protein in rat basal forebrain. <span class="ref-jrnl">J Neurochem.</span> 2006;97 Suppl 1:82–86.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/16635257/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Medvedeva EV, Dmitrieva VG, Povarova OV, et al. The peptide semax affects the expression of genes related to the immune and vascular systems in rat brain focal ischemia. <span class="ref-jrnl">J Mol Neurosci.</span> 2014;52(3):387–393.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/?term=Semax+focal+ischemia+gene+expression" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        </ul>
+      </div>
+    </details>
+    <details class="lit-acc" id="mt1" data-cat="pigment" data-name="melanotan 1 (afamelanotide)">
+      <summary class="lit-sum">
+        <span class="lit-sum-main"><span class="lit-sum-name">Melanotan 1 (Afamelanotide)</span><span class="lit-tag">Pigmentation · melanocortin</span></span>
+        <span class="lit-sum-meta"><span class="lit-count">3 references</span><svg class="lit-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+      <div class="lit-body">
+        <p class="lit-intro">A synthetic α-MSH analog studied in melanocortin-receptor signaling and pigmentation, including clinical work in erythropoietic protoporphyria. Published references below.</p>
+        <ul class="ref-list">
+        <li class="ref-item">
+          <div class="ref-cite">Langendonk JG, Balwani M, Anderson KE, et al. Afamelanotide for erythropoietic protoporphyria. <span class="ref-jrnl">N Engl J Med.</span> 2015;373(1):48–59.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/26132941/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Langan EA, Nie Z, Rhodes LE. Melanotropic peptides: more than just ‘Barbie drugs’ and ‘sun-tan jabs’? <span class="ref-jrnl">Br J Dermatol.</span> 2010;163(3):451–455.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/20545686/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        <li class="ref-item">
+          <div class="ref-cite">Fabrikant J, Touloei K, Brown SM. A review and update on melanocyte stimulating hormone therapy: afamelanotide. <span class="ref-jrnl">J Drugs Dermatol.</span> 2013;12(7):775–779.</div>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/23884489/" target="_blank" rel="noopener nofollow">View source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>
+        </li>
+        </ul>
+      </div>
+    </details>
     <p class="coa-note">Citations link to publishers, PubMed, or PubMed Central. Availability of full text depends on the publisher. Summaries paraphrase published findings and do not represent claims about Stacked Biologics products, which are supplied for laboratory research use only. See the <a class="coa-link" href="disclaimer.html">full disclaimer</a>.</p>
   </div>
 </section>
@@ -188,6 +359,11 @@
         </a>
         <p>Research compounds and peptides.</p>
 <p class="foot-contact"><a href="mailto:info@stackedbiologics.com">info@stackedbiologics.com</a></p>
+<div class="foot-pay"><span class="foot-pay-label">We accept</span><div class="pay-badges pay-badges--sm">
+  <span class="pay-badge"><img src="venmo.svg" alt="Venmo" width="18" height="18">Venmo</span>
+  <span class="pay-badge"><img src="zelle.svg" alt="Zelle" width="18" height="18">Zelle</span>
+  <span class="pay-badge"><img src="cashapp.svg" alt="Cash App" width="18" height="18">Cash App</span>
+</div></div>
 <p class="foot-hours">Support: Mon–Sat, 9am–8pm ET · replies within 1 business day</p>
       </div>
       <div>
@@ -195,7 +371,7 @@
         <div class="foot-links">
           <a href="glp3-rt40.html">GLP3-RT</a>
           <a href="enclomiphene.html">Enclomiphene</a>
-          <a href="bpc-157.html">BPC-157</a>
+          <a href="klow.html">KLOW Blend</a>
           <a href="ghk-cu.html">GHK-Cu</a>
         </div>
       </div>
@@ -205,7 +381,7 @@
           <a href="about.html">About</a>
               <a href="how-to-order.html">How to order</a>
           <a href="lab-results.html">Lab results</a>
-          <a href="research.html">Research library</a>
+          <a href="research.html">Library</a>
         </div>
       </div>
       <div>
@@ -225,6 +401,31 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+(function(){
+  var chips=document.querySelectorAll('.lit-chip');
+  var items=document.querySelectorAll('.lit-acc');
+  var search=document.getElementById('lit-search');
+  var empty=document.getElementById('lit-empty');
+  var cat='all';
+  function apply(){
+    var q=(search&&search.value||'').trim().toLowerCase();
+    var shown=0;
+    items.forEach(function(it){
+      var okCat=cat==='all'||((' '+it.getAttribute('data-cat')+' ').indexOf(' '+cat+' ')>-1);
+      var okQ=!q||(it.getAttribute('data-name').indexOf(q)>-1)||(it.textContent.toLowerCase().indexOf(q)>-1);
+      var vis=okCat&&okQ;
+      it.classList.toggle('cat-hide',!vis);
+      if(vis)shown++;
+    });
+    if(empty)empty.hidden=shown!==0;
+  }
+  chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('active');});c.classList.add('active');cat=c.getAttribute('data-cat');apply();});});
+  if(search)search.addEventListener('input',apply);
+  // open a compound if linked via hash
+  if(location.hash){var t=document.querySelector(location.hash);if(t&&t.classList.contains('lit-acc')){t.open=true;}}
+})();
+</script>
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

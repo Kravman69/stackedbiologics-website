@@ -53,10 +53,10 @@
   function find(id) { for (var i = 0; i < cart.length; i++) if (cart[i].id === id) return cart[i]; return null; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
-  function add(id, name, price, unit, tiers, over, qty) {
+  function add(id, name, price, unit, tiers, over, qty, lyo) {
     var it = find(id);
     if (it) it.qty += (qty || 1);
-    else cart.push({ id: id, name: name, price: price, unit: unit || '', qty: qty || 1, tiers: tiers || null, over: over || 0 });
+    else cart.push({ id: id, name: name, price: price, unit: unit || '', qty: qty || 1, tiers: tiers || null, over: over || 0, lyo: lyo || 0 });
     save(); showCartView(); render(); openDrawer();
   }
   function setQty(id, q) {
@@ -102,7 +102,10 @@
             '<p class="cart-empty">Your cart is empty.</p>' +
           '</div>' +
           '<form class="checkout-view" hidden novalidate>' +
-            '<p class="co-eyebrow">Shipping details</p>' +
+            '<input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+            '<div class="co-steps"><span class="co-step on">1 &middot; Shipping</span><span class="co-step">2 &middot; Pay</span></div>' +
+            '<p class="co-eyebrow">Where should we ship it?</p>' +
+            '<p class="co-lede">No payment is taken on this screen. Next you\u2019ll pay by Venmo \u2014 we only ship after your payment clears.</p>' +
             '<label class="co-field"><span>Full name *</span><input name="name" autocomplete="name" required></label>' +
             '<label class="co-field"><span>Email *</span><input name="email" type="email" autocomplete="email" required></label>' +
             '<label class="co-field"><span>Phone (optional)</span><input name="phone" type="tel" autocomplete="tel" placeholder="For delivery questions only"></label>' +
@@ -112,21 +115,21 @@
               '<label class="co-field co-state"><span>State *</span><input name="state" autocomplete="address-level1" maxlength="2" placeholder="TX" required></label>' +
               '<label class="co-field co-zip"><span>ZIP *</span><input name="zip" autocomplete="postal-code" inputmode="numeric" maxlength="10" required></label>' +
             '</div>' +
-            '<p class="co-note">All products are for laboratory research use only. By ordering you confirm you are 21+ and a qualified researcher.</p>' +
+            '<p class="co-note">Research use only. By placing this order you confirm you are 21+ and a qualified researcher.</p>' +
           '</form>' +
           '<div class="cart-sent" hidden>' +
             '<div class="cart-sent-ic">&#10003;</div>' +
             '<h3>Sending\u2026</h3>' +
             '<p>Sending your order\u2026</p>' +
-            '<p class="cart-sent-fallback">We reply within one business day with your total and payment instructions.</p>' +
+            '<p class="cart-sent-fallback">Almost done \u2014 send your payment below to lock in your order.</p>' +
           '</div>' +
         '</div>' +
         '<footer class="cart-foot">' +
           '<div class="cart-subtotal"><span>Subtotal</span><b class="cart-sub-amt">$0</b></div>' +
-          '<button class="btn btn-primary cart-checkout" type="button">Checkout</button>' +
+          '<button class="btn btn-primary cart-checkout" type="button">Continue to shipping \u2192</button>' +
           '<button class="btn btn-ghost cart-back" type="button" hidden>Back to cart</button>' +
-          '<button class="btn btn-primary cart-send" type="button" hidden>Send order</button>' +
-          '<p class="cart-foot-note">You confirm stock, total &amp; payment by reply \u2014 within one business day.</p>' +
+          '<button class="btn btn-primary cart-send" type="button" hidden>Place my order \u2192</button>' +
+          '<p class="cart-foot-note">Secure checkout \u00b7 no payment is taken until the next screen.</p>' +
         '</footer>' +
       '</aside>';
     document.body.appendChild(drawer);
@@ -168,12 +171,29 @@
       '</div>';
   }
 
+  var LYO_IDS = ['glp3-rt40','motsc-10','selank-10','semax-10','ss31-10','mt1-10','ghk-cu-powder','cjc-1295-ipamorelin'];
+  function renderSuggest() {
+    if (!cartView) return;
+    var box = cartView.querySelector('.cart-suggest');
+    var lyo = cart.reduce(function (s, i) { return s + (LYO_IDS.indexOf(i.id) >= 0 ? i.qty : 0) + ((i.lyo || 0) * i.qty); }, 0);
+    var bacItem = find('bac-water');
+    var bac = bacItem ? bacItem.qty : 0;
+    var need = lyo - bac;
+    if (need > 0) {
+      if (!box) { box = document.createElement('div'); box.className = 'cart-suggest'; listEl.insertAdjacentElement('afterend', box); }
+      box.innerHTML = '<div class="cs-txt"><b>Don\u2019t forget bacteriostatic water</b><span>Lyophilized powders must be reconstituted \u2014 add ' + need + ' \u00d7 BAC water (3 mL), one per vial.</span></div>' +
+        '<button type="button" class="cs-add">+ Add ' + need + ' \u00d7 BAC</button>';
+      box.querySelector('.cs-add').onclick = function () { add('bac-water', 'Bacteriostatic Water \u2014 3 mL', 5, '3 mL vial', null, 0, need); };
+    } else if (box) { box.remove(); }
+  }
+
   function render() {
     var n = count();
     if (badge) { badge.textContent = n; badge.hidden = n === 0; }
     if (!drawer) return;
     listEl.innerHTML = cart.map(lineHTML).join('');
     emptyEl.hidden = cart.length > 0;
+    renderSuggest();
     subEl.textContent = money(subtotal());
     var checkoutBtn = drawer.querySelector('.cart-checkout');
     if (checkoutBtn && !coViewOpen() && !sentOpen()) checkoutBtn.disabled = cart.length === 0;
@@ -206,6 +226,7 @@
   }
 
   function sendOrder() {
+    var _hp = coForm.querySelector('[name=website]'); if (_hp && _hp.value) { return; }
     var name = (coForm.querySelector('[name=name]').value || '').trim();
     var email = (coForm.querySelector('[name=email]').value || '').trim();
     var phone = (coForm.querySelector('[name=phone]').value || '').trim();
@@ -344,20 +365,33 @@
       if (h) h.textContent = ok ? 'Order received — now submit payment' : 'Almost there';
       if (!msg) return;
       if (ok) {
-        msg.innerHTML = 'A receipt has been emailed to <b>' + esc(email) + '</b>.';
+        msg.innerHTML = '\u2713 Order received! A copy is on its way to <b>' + esc(email) + '</b>. One last step \u2014 send your payment to lock it in:';
         var pay = document.createElement('div');
         pay.className = 'venmo-pay';
         pay.innerHTML =
           '<div class="pay-banner">\u26A0 Your order ships after payment \u2014 pay now</div>' +
           '<p class="venmo-amt">Amount due<br><b>' + total + '</b></p>' +
           '<p class="venmo-order">Order <b>' + orderNo + '</b></p>' +
-          '<a class="btn btn-primary pay-cta" href="https://www.paypal.com/qrcodes/venmocs/f33c0f30-84b1-42a4-8f05-6f88e7670e8b" target="_blank" rel="noopener">Pay ' + total + ' with Venmo \u2192 @ProjectStacked</a>' +
+          '<a class="btn btn-primary pay-cta" href="https://www.paypal.com/qrcodes/venmocs/f33c0f30-84b1-42a4-8f05-6f88e7670e8b" target="_blank" rel="noopener">Step 1 \u2014 Pay ' + total + ' with Venmo \u2192</a>' +
           '<p class="venmo-hint">or scan the code:</p>' +
           '<a href="https://www.paypal.com/qrcodes/venmocs/f33c0f30-84b1-42a4-8f05-6f88e7670e8b" target="_blank" rel="noopener"><img src="venmo-qr.png" alt="Venmo QR code for @ProjectStacked" class="venmo-qr"></a>' +
           '<a class="venmo-link" href="https://venmo.com/u/ProjectStacked" target="_blank" rel="noopener">Open @ProjectStacked in the Venmo app \u2192</a>' +
-          '<div class="pay-note-box"><b>In the Venmo notes, send this exactly as written:</b><br>' + esc(name) + ' \u2014 ' + orderNo + '<br><span>This is how we match your payment to your order.</span></div>' +
+          '<div class="pay-note-box"><b>Step 2 \u2014 paste this into the Venmo notes:</b>' +
+            '<div class="pay-copy-row"><code class="pay-copy-text">' + esc(name) + ' \u2014 ' + orderNo + '</code>' +
+            '<button type="button" class="pay-copy-btn" data-copy="' + esc(name) + ' \u2014 ' + orderNo + '">Copy</button></div>' +
+            '<span>This is how we match your payment to your order.</span></div>' +
+          '<p class="pay-done">Step 3 \u2014 that\u2019s it. We ship within 1 business day once your payment lands.</p>' +
+          '<div class="pay-badges"><span class="pay-badge"><img src="venmo.svg" alt="Venmo" width="20" height="20">Venmo</span><span class="pay-badge"><img src="zelle.svg" alt="Zelle" width="20" height="20">Zelle</span><span class="pay-badge"><img src="cashapp.svg" alt="Cash App" width="20" height="20">Cash App</span></div>' +
           '<p class="venmo-hint">Prefer <b>Zelle</b> or <b>Cash App</b>? Message us in the live chat or reply to your receipt email and we\u2019ll send the details.</p>';
         msg.insertAdjacentElement('afterend', pay);
+        var copyBtn = pay.querySelector('.pay-copy-btn');
+        if (copyBtn) copyBtn.addEventListener('click', function () {
+          var txt = copyBtn.getAttribute('data-copy');
+          function legacyCopy(t) { try { var ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); } catch (e) {} }
+          function flash() { copyBtn.textContent = '\u2713 Copied'; copyBtn.classList.add('copied'); setTimeout(function () { copyBtn.textContent = 'Copy'; copyBtn.classList.remove('copied'); }, 2000); }
+          if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(flash).catch(function () { legacyCopy(txt); flash(); }); }
+          else { legacyCopy(txt); flash(); }
+        });
       } else {
         var subj = encodeURIComponent(subject), bd = encodeURIComponent(body);
         msg.textContent = 'We couldn\u2019t reach the order service \u2014 your email app should open with the full order instead; just hit send.' + (copied ? ' (It\u2019s also copied to your clipboard.)' : '');
@@ -416,7 +450,7 @@
     var priceStr = b.getAttribute('data-price') || '';
     var m = priceStr.match(/[\d.]+/);
     var price = m ? parseFloat(m[0]) : 0;
-    add(id, name, price, b.getAttribute('data-unit') || '', parseTiers(b.getAttribute('data-tiers')), parseFloat(b.getAttribute('data-over')) || 0);
+    add(id, name, price, b.getAttribute('data-unit') || '', parseTiers(b.getAttribute('data-tiers')), parseFloat(b.getAttribute('data-over')) || 0, 1, parseInt(b.getAttribute('data-lyo'), 10) || 0);
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
 
@@ -531,6 +565,7 @@
   var note = document.getElementById('signup-note');
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    var _hp = form.querySelector('[name=website]'); if (_hp && _hp.value) { form.reset(); return; }
     var email = (form.querySelector('input[name="email"]').value || '').trim();
     if (!email) return;
     function ok() {
@@ -574,6 +609,7 @@
         '<h2 id="gate-title">Enter your email to receive up to 20% off your order</h2>' +
         '<p class="gate-sub">Unlock multi-buy discounts on every research compound \u2014 up to 20% off when you order more.</p>' +
         '<form class="gate-form" novalidate>' +
+          '<input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
           '<input name="email" type="email" placeholder="you@lab.com" autocomplete="email" aria-label="Email address" required>' +
           '<button class="btn btn-primary" type="submit">Unlock my discount</button>' +
         '</form>' +
@@ -582,7 +618,7 @@
       '</div>';
     document.body.appendChild(modal);
     input = modal.querySelector('input[name=email]');
-    modal.querySelector('.gate-form').addEventListener('submit', function (e) { e.preventDefault(); submit(); });
+    modal.querySelector('.gate-form').addEventListener('submit', function (e) { e.preventDefault(); var _hp = modal.querySelector('[name=website]'); if (_hp && _hp.value) { close(); return; } submit(); });
     modal.addEventListener('click', function (e) { if (e.target.closest('[data-gate-close]')) close(); });
   }
   function open() { if (!modal) build(); modal.hidden = false; setTimeout(function () { try { input.focus(); } catch (e) {} }, 60); }
@@ -639,9 +675,53 @@
     try {
       if (!sessionStorage.getItem('sb-gate-seen')) {
         sessionStorage.setItem('sb-gate-seen', '1');
-        setTimeout(open, 60000);
+        setTimeout(open, 30000);
       }
-    } catch (e) { setTimeout(open, 60000); }
+    } catch (e) { setTimeout(open, 30000); }
   }
   init();
+})();
+
+
+/* Catalog carousel + category filter (index) */
+(function () {
+  var carousel = document.querySelector('.cat-carousel');
+  if (carousel) {
+    var track = carousel.querySelector('.cc-track');
+    var slides = carousel.querySelectorAll('.cc-slide');
+    var dots = carousel.querySelectorAll('.cc-dot');
+    var i = 0, timer = null, n = slides.length;
+    function go(x) {
+      i = (x + n) % n;
+      track.style.transform = 'translateX(' + (-i * 100) + '%)';
+      dots.forEach(function (d, k) { d.classList.toggle('active', k === i); });
+    }
+    function start() { stop(); timer = setInterval(function () { go(i + 1); }, 5000); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    dots.forEach(function (d) { d.addEventListener('click', function () { go(parseInt(d.getAttribute('data-i'), 10)); start(); }); });
+    var prev = carousel.querySelector('.cc-prev'), next = carousel.querySelector('.cc-next');
+    if (prev) prev.addEventListener('click', function (e) { e.preventDefault(); go(i - 1); start(); });
+    if (next) next.addEventListener('click', function (e) { e.preventDefault(); go(i + 1); start(); });
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', start);
+    start();
+  }
+
+  var filter = document.querySelector('.cat-filter');
+  var grid = document.getElementById('catalog-grid');
+  if (filter && grid) {
+    var chips = filter.querySelectorAll('.cf-chip');
+    var cards = grid.querySelectorAll('.product-card');
+    filter.addEventListener('click', function (e) {
+      var chip = e.target.closest('.cf-chip');
+      if (!chip) return;
+      var cat = chip.getAttribute('data-cat');
+      chips.forEach(function (c) { c.classList.toggle('active', c === chip); });
+      cards.forEach(function (card) {
+        var cats = (card.getAttribute('data-category') || '').split(' ');
+        var show = cat === 'all' || cats.indexOf(cat) >= 0;
+        card.classList.toggle('cat-hide', !show);
+      });
+    });
+  }
 })();
