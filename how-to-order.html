@@ -58,36 +58,32 @@
     </nav>
     <span class="badge-ruo">Qualified researchers &amp; institutions</span>
     <h1>How to order</h1>
-    <p class="class-line">Build your order in the cart, submit it, and we’ll reach out to confirm availability and arrange payment — three steps, one business day turnaround.</p>
+    <p class="class-line">Order through the cart — add your compounds and check out. Questions? Email us below. We reply within one business day.</p>
   </div>
 </section>
 
 <section class="section tight">
   <div class="container narrow">
     <div class="grid cols-3">
-      <article class="card"><h3>1 &middot; Submit your order</h3><p>Browse the catalog, add your compounds and quantities to the cart, then submit at checkout. Prefer to write us? Email <a class="coa-link" href="mailto:info@stackedbiologics.com">info@stackedbiologics.com</a> or use the live chat with the compound and quantity.</p></article>
-      <article class="card"><h3>2 &middot; We reach out for payment</h3><p>We reply within one business day with availability, your total, batch information, and payment instructions. No payment is taken up front — we arrange it directly with you.</p></article>
-      <article class="card"><h3>3 &middot; Receive</h3><p>Orders process within 1 business day and ship with 2-day standard delivery, fully tracked. Every shipment carries a batch ID tied to its testing record. <a class="coa-link" href="#" id="expedite-chat" style="color:var(--brand-200)">Need it faster? Use the live chat for expedited help.</a></p></article>
-    </div>
-    <div class="grid cols-2" style="margin-top:32px">
-      <article class="card"><h3>Email</h3><p>One inbox for everything — quotes, orders, and questions. We respond within one business day: <a class="coa-link" href="mailto:info@stackedbiologics.com">info@stackedbiologics.com</a></p></article>
-      <article class="card"><h3>General inquiries</h3><p>Questions about handling, storage, or the catalog — we answer investigator questions directly.</p></article>
+      <article class="card"><h3>1 &middot; Submit</h3><p>Add your compounds to the cart and check out.</p></article>
+      <article class="card"><h3>2 &middot; Confirm</h3><p>We reply within one business day with your total and payment instructions — nothing is charged up front.</p></article>
+      <article class="card"><h3>3 &middot; Receive</h3><p>Ships in 1 business day, 2-day tracked delivery. <a class="coa-link" href="#" id="expedite-chat" style="color:var(--brand-200)">Need it faster? Live chat.</a></p></article>
     </div>
 
     <div class="help-now help-now--form">
       <div class="inquiry-intro">
-        <h2>Send us your inquiry</h2>
-        <p>Fill this out and we&rsquo;ll pick it up in live chat to confirm availability, total, and payment &mdash; usually within one business day. Prefer to talk now? <a href="#" id="open-chat" class="coa-link" style="color:var(--brand-200)">Open the live chat</a>.</p>
+        <h2>Questions?</h2>
+        <p>This opens an email to <a class="coa-link" href="mailto:info@stackedbiologics.com">info@stackedbiologics.com</a> with your details. Prefer to talk now? <a href="#" id="open-chat" class="coa-link" style="color:var(--brand-200)">Open the live chat</a>.</p>
       </div>
       <form id="inquiry-form" class="inquiry-form" novalidate>
         <div class="inquiry-row">
           <label>Name<input type="text" name="name" autocomplete="name" required></label>
           <label>Email<input type="email" name="email" autocomplete="email" required></label>
         </div>
-        <label>What can we help with?<textarea name="message" rows="4" placeholder="Compound(s), quantity, and any questions"></textarea></label>
+        <label>Your question<textarea name="message" rows="4" placeholder="Compound(s), quantity, and any questions"></textarea></label>
         <button type="submit" class="btn btn-primary btn-lg">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Submit &amp; open chat
+          Submit
         </button>
         <p class="inquiry-note" id="inquiry-note" hidden></p>
       </form>
@@ -177,16 +173,11 @@ document.getElementById('open-chat').addEventListener('click', function (e) {
     }
     var copied = false;
     try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(body); copied = true; } } catch (ex) {}
-    var chatOpened = false;
-    if (window.Tawk_API && typeof window.Tawk_API.maximize === 'function') { try { window.Tawk_API.maximize(); chatOpened = true; } catch (ex) {} }
+    window.location.href = 'mailto:info@stackedbiologics.com?subject=' + encodeURIComponent('Inquiry — ' + name) + '&body=' + encodeURIComponent(body);
     form.reset();
     note.hidden = false;
     note.style.color = '';
-    note.textContent = chatOpened
-      ? (copied
-          ? 'Thanks, ' + name + ' — we’ve opened the live chat and copied your details. Paste them into the chat and send, and we’ll take it from there.'
-          : 'Thanks, ' + name + ' — we’ve opened the live chat. Send your note there and we’ll follow up.')
-      : 'Thanks, ' + name + ' — message us through the live chat in the bottom-right corner and we’ll follow up within one business day.';
+    note.textContent = 'Thanks, ' + name + ' — your email app should open with your inquiry addressed to info@stackedbiologics.com. Just hit send and we’ll reply within one business day.';
   });
 })();
 var ec = document.getElementById('expedite-chat');

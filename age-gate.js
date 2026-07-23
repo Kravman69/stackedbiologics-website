@@ -96,7 +96,6 @@
 
   function showIntro() {
     try {
-      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       if (sessionStorage.getItem(CONFIG.introKey)) return;
       sessionStorage.setItem(CONFIG.introKey, "1");
     } catch (e) { return; }

@@ -1440,7 +1440,9 @@ a.product-card:hover h3 { color: var(--brand); }
   border: 1px solid var(--line); border-radius: var(--r-sm);
   padding: 10px 16px; font-size: 0.9rem; color: var(--muted);
   background: rgba(10,18,30,0.4);
+  cursor: pointer; transition: border-color .15s ease, transform .1s ease;
 }
+.price-tiers .tier:hover { border-color: var(--brand-200); transform: translateY(-1px); }
 .price-tiers .tier b { display: block; font-size: 1.25rem; color: var(--brand-200); font-weight: 700; }
 .price-tiers .tier.best { border-color: rgba(201,162,39,0.5); background: var(--brand-soft); }
 
@@ -1448,10 +1450,10 @@ a.product-card:hover h3 { color: var(--brand); }
 .help-now--form { display: block; }
 .inquiry-intro { max-width: 640px; margin: 0 auto 20px; text-align: center; }
 .inquiry-intro h2 { margin: 0 0 8px; }
-.inquiry-intro p { margin: 0; color: var(--muted); }
+.inquiry-intro p { margin: 0 auto; color: var(--muted); }
 .inquiry-form { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
 .inquiry-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.inquiry-form label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; font-weight: 600; color: var(--brand-200); text-align: left; }
+.inquiry-form label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; font-weight: 600; color: var(--brand-200); text-align: center; }
 .inquiry-form input, .inquiry-form textarea {
   font: inherit; color: var(--ink); background: rgba(10,18,30,0.55);
   border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; width: 100%;

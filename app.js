@@ -53,10 +53,10 @@
   function find(id) { for (var i = 0; i < cart.length; i++) if (cart[i].id === id) return cart[i]; return null; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
-  function add(id, name, price, unit, tiers, over) {
+  function add(id, name, price, unit, tiers, over, qty) {
     var it = find(id);
-    if (it) it.qty++;
-    else cart.push({ id: id, name: name, price: price, unit: unit || '', qty: 1, tiers: tiers || null, over: over || 0 });
+    if (it) it.qty += (qty || 1);
+    else cart.push({ id: id, name: name, price: price, unit: unit || '', qty: qty || 1, tiers: tiers || null, over: over || 0 });
     save(); showCartView(); render(); openDrawer();
   }
   function setQty(id, q) {
@@ -110,16 +110,16 @@
           '</form>' +
           '<div class="cart-sent" hidden>' +
             '<div class="cart-sent-ic">&#10003;</div>' +
-            '<h3>Almost there</h3>' +
-            '<p>We\u2019ve opened the live chat and copied your full order \u2014 paste it into the chat and send.</p>' +
-            '<p class="cart-sent-fallback">The live chat is in the bottom-right corner. We reply within one business day.</p>' +
+            '<h3>Sending\u2026</h3>' +
+            '<p>Sending your order\u2026</p>' +
+            '<p class="cart-sent-fallback">We reply within one business day with your total and payment instructions.</p>' +
           '</div>' +
         '</div>' +
         '<footer class="cart-foot">' +
           '<div class="cart-subtotal"><span>Subtotal</span><b class="cart-sub-amt">$0</b></div>' +
           '<button class="btn btn-primary cart-checkout" type="button">Checkout</button>' +
           '<button class="btn btn-ghost cart-back" type="button" hidden>Back to cart</button>' +
-          '<button class="btn btn-primary cart-send" type="button" hidden>Send order via chat</button>' +
+          '<button class="btn btn-primary cart-send" type="button" hidden>Send order</button>' +
           '<p class="cart-foot-note">You confirm stock, total &amp; payment by reply \u2014 within one business day.</p>' +
         '</footer>' +
       '</aside>';
@@ -233,19 +233,48 @@
     }
     var copied = false;
     try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(body); copied = true; } } catch (ex) {}
-    var chatOpened = false;
-    if (window.Tawk_API && typeof window.Tawk_API.maximize === 'function') { try { window.Tawk_API.maximize(); chatOpened = true; } catch (ex) {} }
+    var subject = 'New order \u2014 ' + name + ' (' + count() + ' item' + (count() === 1 ? '' : 's') + ', ' + money(subtotal()) + ')';
+
+    // Send directly to info@ via FormSubmit relay; customer gets an email receipt copy.
+    var sentOk = false;
+    var payload = {
+      _subject: subject,
+      _template: 'box',
+      _captcha: 'false',
+      _autoresponse: 'Thanks for your order with Stacked Biologics \u2014 this is your receipt copy. We\u2019ll reply within one business day with your total and payment instructions.\n\n' + body,
+      _replyto: email,
+      name: name,
+      email: email,
+      shipping_address: addr,
+      order: body
+    };
+    fetch('https://formsubmit.co/ajax/info@stackedbiologics.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      sentOk = d && (d.success === 'true' || d.success === true);
+      showSentMsg(sentOk);
+    }).catch(function () { showSentMsg(false); });
+
+    function showSentMsg(ok) {
+      var msg = drawer.querySelector('.cart-sent p');
+      var h = drawer.querySelector('.cart-sent h3');
+      if (h) h.textContent = ok ? 'Order received' : 'Almost there';
+      if (!msg) return;
+      if (ok) {
+        msg.textContent = 'Order received! A receipt has been emailed to ' + email + '. We\u2019ll reply within one business day with your total and payment instructions.';
+      } else {
+        var subj = encodeURIComponent(subject), bd = encodeURIComponent(body);
+        msg.textContent = 'We couldn\u2019t reach the order service \u2014 your email app should open with the full order instead; just hit send.' + (copied ? ' (It\u2019s also copied to your clipboard.)' : '');
+        window.location.href = 'mailto:info@stackedbiologics.com?subject=' + subj + '&body=' + bd;
+      }
+    }
 
     cart = []; save();
     cartView.hidden = true; coView.hidden = true; sent.hidden = false;
     var msg = drawer.querySelector('.cart-sent p');
-    if (msg) {
-      msg.textContent = chatOpened
-        ? (copied
-            ? 'We\u2019ve opened the live chat and copied your full order to the clipboard \u2014 paste it into the chat and send. We\u2019ll confirm stock, total, and payment right there.'
-            : 'We\u2019ve opened the live chat \u2014 send us your order and we\u2019ll confirm stock, total, and payment right there.')
-        : 'Message us through the live chat in the bottom-right corner with your order and we\u2019ll confirm stock, total, and payment.';
-    }
+    if (msg) msg.textContent = 'Sending your order\u2026';
     drawer.querySelector('.cart-title').textContent = 'Thank you';
     drawer.querySelector('.cart-subtotal').hidden = true;
     drawer.querySelector('.cart-checkout').hidden = true;
@@ -269,6 +298,22 @@
   }
 
   document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('.price-tiers .tier');
+    if (t) {
+      var src = document.querySelector('.order-btn');
+      if (src) {
+        e.preventDefault();
+        var tname = src.getAttribute('data-product') || 'Research compound';
+        var tid = src.getAttribute('data-id') || tname;
+        var tm = (src.getAttribute('data-price') || '').match(/[\d.]+/);
+        var siblings = Array.prototype.slice.call(t.parentNode.querySelectorAll('.tier'));
+        var qty = siblings.indexOf(t) + 1;
+        var cur = find(tid);
+        var target = qty;
+        add(tid, tname, tm ? parseFloat(tm[0]) : 0, src.getAttribute('data-unit') || '', parseTiers(src.getAttribute('data-tiers')), parseFloat(src.getAttribute('data-over')) || 0, cur ? Math.max(1, target - cur.qty) : target);
+        return;
+      }
+    }
     var b = e.target.closest && e.target.closest('.order-btn');
     if (!b) return;
     e.preventDefault();
