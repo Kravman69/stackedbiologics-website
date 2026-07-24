@@ -53,10 +53,14 @@
   function find(id) { for (var i = 0; i < cart.length; i++) if (cart[i].id === id) return cart[i]; return null; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
+  function track(name, params) {
+    if (typeof window.gtag === 'function') { try { window.gtag('event', name, params || {}); } catch (e) {} }
+  }
   function add(id, name, price, unit, tiers, over, qty, lyo) {
     var it = find(id);
     if (it) it.qty += (qty || 1);
     else cart.push({ id: id, name: name, price: price, unit: unit || '', qty: qty || 1, tiers: tiers || null, over: over || 0, lyo: lyo || 0 });
+    track('add_to_cart', { item_id: id, item_name: name });
     save(); showCartView(); render(); openDrawer();
   }
   function setQty(id, q) {
@@ -104,6 +108,8 @@
           '<form class="checkout-view" hidden novalidate>' +
             '<input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
             '<div class="co-steps"><span class="co-step on">1 &middot; Shipping</span><span class="co-step">2 &middot; Pay</span></div>' +
+            '<ul class="co-trust"><li>US-based</li><li>Third-party tested</li><li>Ships in 2 days</li><li>Secure manual payment</li></ul>' +
+            '<div class="co-recon" hidden></div>' +
             '<p class="co-eyebrow">Where should we ship it?</p>' +
             '<p class="co-lede">No payment is taken on this screen. Next you\u2019ll pay by Venmo \u2014 we only ship after your payment clears.</p>' +
             '<label class="co-field"><span>Full name *</span><input name="name" autocomplete="name" required></label>' +
@@ -125,6 +131,7 @@
           '</div>' +
         '</div>' +
         '<footer class="cart-foot">' +
+          '<div class="ship-progress" hidden><p class="sp-label"></p><div class="sp-track"><div class="sp-fill"></div></div></div>' +
           '<div class="cart-subtotal"><span>Subtotal</span><b class="cart-sub-amt">$0</b></div>' +
           '<button class="btn btn-primary cart-checkout" type="button">Continue to shipping \u2192</button>' +
           '<button class="btn btn-ghost cart-back" type="button" hidden>Back to cart</button>' +
@@ -172,19 +179,33 @@
   }
 
   var LYO_IDS = ['glp3-rt40','motsc-10','selank-10','semax-10','ss31-10','mt1-10','ghk-cu-powder','cjc-1295-ipamorelin'];
+  function reconNeed() {
+    var lyo = cart.reduce(function (s, i) { return s + (LYO_IDS.indexOf(i.id) >= 0 ? i.qty : 0) + ((i.lyo || 0) * i.qty); }, 0);
+    var bacItem = find('bac-water');
+    return lyo - (bacItem ? bacItem.qty : 0);
+  }
+  function addBac(n) { add('bac-water', 'Bacteriostatic Water \u2014 3 mL', 8, '3 mL vial', null, 0, n); }
   function renderSuggest() {
     if (!cartView) return;
     var box = cartView.querySelector('.cart-suggest');
-    var lyo = cart.reduce(function (s, i) { return s + (LYO_IDS.indexOf(i.id) >= 0 ? i.qty : 0) + ((i.lyo || 0) * i.qty); }, 0);
-    var bacItem = find('bac-water');
-    var bac = bacItem ? bacItem.qty : 0;
-    var need = lyo - bac;
+    var need = reconNeed();
     if (need > 0) {
       if (!box) { box = document.createElement('div'); box.className = 'cart-suggest'; listEl.insertAdjacentElement('afterend', box); }
-      box.innerHTML = '<div class="cs-txt"><b>Don\u2019t forget bacteriostatic water</b><span>Lyophilized powders must be reconstituted \u2014 add ' + need + ' \u00d7 BAC water (3 mL), one per vial.</span></div>' +
+      box.innerHTML = '<div class="cs-txt"><b>Don\u2019t forget reconstitution solution</b><span>Lyophilized (freeze-dried) compounds must be reconstituted \u2014 add ' + need + ' \u00d7 bacteriostatic water (3 mL), one per vial.</span></div>' +
         '<button type="button" class="cs-add">+ Add ' + need + ' \u00d7 BAC</button>';
-      box.querySelector('.cs-add').onclick = function () { add('bac-water', 'Bacteriostatic Water \u2014 3 mL', 5, '3 mL vial', null, 0, need); };
+      box.querySelector('.cs-add').onclick = function () { addBac(need); };
     } else if (box) { box.remove(); }
+  }
+  function fillReconBanner() {
+    var el = drawer && drawer.querySelector('.co-recon');
+    if (!el) return;
+    var need = reconNeed();
+    if (need > 0) {
+      el.hidden = false;
+      el.innerHTML = '<div class="cs-txt"><b>Don\u2019t forget reconstitution solution</b><span>Your order has ' + need + ' lyophilized vial' + (need > 1 ? 's' : '') + ' with no bacteriostatic water. Add ' + need + ' \u00d7 BAC (3 mL) to reconstitute \u2014 one per vial.</span></div>' +
+        '<button type="button" class="cs-add">+ Add ' + need + ' \u00d7 BAC</button>';
+      el.querySelector('.cs-add').onclick = function () { addBac(need); fillReconBanner(); };
+    } else { el.hidden = true; el.innerHTML = ''; }
   }
 
   function render() {
@@ -195,6 +216,7 @@
     emptyEl.hidden = cart.length > 0;
     renderSuggest();
     subEl.textContent = money(subtotal());
+    (function(){ var sp=drawer.querySelector('.ship-progress'); if(!sp) return; var TH=150, st=subtotal(); if(cart.length===0){ sp.hidden=true; return; } sp.hidden=false; var fl=sp.querySelector('.sp-fill'), lb=sp.querySelector('.sp-label'); if(st>=TH){ sp.classList.add('done'); fl.style.width='100%'; lb.innerHTML='\u2713 You\u2019ve unlocked <b>free US shipping</b>'; } else { sp.classList.remove('done'); fl.style.width=Math.min(100,Math.round(st/TH*100))+'%'; lb.innerHTML='You\u2019re <b>'+money(TH-st)+'</b> away from free US shipping'; } })();
     var checkoutBtn = drawer.querySelector('.cart-checkout');
     if (checkoutBtn && !coViewOpen() && !sentOpen()) checkoutBtn.disabled = cart.length === 0;
   }
@@ -216,6 +238,7 @@
 
   function goCheckout() {
     if (cart.length === 0) return;
+    track('begin_checkout', { value: subtotal() });
     cartView.hidden = true; coView.hidden = false; sent.hidden = true;
     drawer.querySelector('.cart-title').textContent = 'Checkout';
     drawer.querySelector('.cart-subtotal').hidden = false;
@@ -223,6 +246,7 @@
     drawer.querySelector('.cart-back').hidden = false;
     drawer.querySelector('.cart-send').hidden = false;
     drawer.querySelector('.cart-foot-note').hidden = false;
+    fillReconBanner();
   }
 
   function sendOrder() {
@@ -308,6 +332,9 @@
     var lines = cart.map(function (i) {
       return '  \u2022 ' + i.name + '  \u00d7 ' + i.qty + '   = ' + money(lineTotal(i));
     }).join('\n');
+    var recapHtml = '<div class="pay-recap"><div class="pay-recap-title">Your order</div>' +
+      cart.map(function (i) { return '<div class="pay-recap-row"><span>' + esc(i.name) + ' \u00d7 ' + i.qty + '</span><span>' + money(lineTotal(i)) + '</span></div>'; }).join('') +
+      '<div class="pay-recap-row pay-recap-total"><span>Subtotal</span><span>' + total + '</span></div></div>';
     var rule = '----------------------------------------';
     var body =
       'NEW ORDER ' + orderNo + ' \u2014 Stacked Biologics\n' + rule + '\n' + lines + '\n' + rule +
@@ -370,6 +397,7 @@
         pay.className = 'venmo-pay';
         pay.innerHTML =
           '<div class="pay-banner">\u26A0 Your order ships after payment \u2014 pay now</div>' +
+          recapHtml +
           '<p class="venmo-amt">Amount due<br><b>' + total + '</b></p>' +
           '<p class="venmo-order">Order <b>' + orderNo + '</b></p>' +
           '<a class="btn btn-primary pay-cta" href="https://www.paypal.com/qrcodes/venmocs/f33c0f30-84b1-42a4-8f05-6f88e7670e8b" target="_blank" rel="noopener">Step 1 \u2014 Pay ' + total + ' with Venmo \u2192</a>' +
@@ -381,8 +409,9 @@
             '<button type="button" class="pay-copy-btn" data-copy="' + esc(name) + ' \u2014 ' + orderNo + '">Copy</button></div>' +
             '<span>This is how we match your payment to your order.</span></div>' +
           '<p class="pay-done">Step 3 \u2014 that\u2019s it. We ship within 1 business day once your payment lands.</p>' +
-          '<div class="pay-badges"><span class="pay-badge"><img src="venmo.svg" alt="Venmo" width="20" height="20">Venmo</span><span class="pay-badge"><img src="zelle.svg" alt="Zelle" width="20" height="20">Zelle</span><span class="pay-badge"><img src="cashapp.svg" alt="Cash App" width="20" height="20">Cash App</span></div>' +
-          '<p class="venmo-hint">Prefer <b>Zelle</b> or <b>Cash App</b>? Message us in the live chat or reply to your receipt email and we\u2019ll send the details.</p>';
+          '<div class="pay-badges"><span class="pay-badge"><img src="venmo.svg" alt="Venmo" width="20" height="20">Venmo</span></div>' +
+          '<p class="venmo-hint"><b>Zelle</b> &amp; <b>Cash App</b> coming soon.</p>' +
+          '<p class="pay-privacy">\uD83D\uDD12 Your details are used only to fulfil and ship this order \u2014 never sold or shared.</p>';
         msg.insertAdjacentElement('afterend', pay);
         var copyBtn = pay.querySelector('.pay-copy-btn');
         if (copyBtn) copyBtn.addEventListener('click', function () {
@@ -399,6 +428,7 @@
       }
     }
 
+    track('submit_order', { value: subtotal() });
     cart = []; save();
     cartView.hidden = true; coView.hidden = true; sent.hidden = false;
     var msg = drawer.querySelector('.cart-sent p');
@@ -766,3 +796,8 @@
     apply();
   }
 })();
+
+/* Reviews — render only when real reviews exist. Add entries like:
+   window.SB_REVIEWS = { "ss31-10":[{name:"J.R.",stars:5,text:"…",date:"2026-07"}] }; */
+window.SB_REVIEWS = window.SB_REVIEWS || {};
+(function(){ document.addEventListener('DOMContentLoaded', function(){ var btn=document.querySelector('.order-btn[data-id]'); if(!btn) return; var id=btn.getAttribute('data-id'); var list=window.SB_REVIEWS[id]; if(!list||!list.length) return; var foot=document.querySelector('.site-footer'); if(!foot) return; var sec=document.createElement('section'); sec.className='section tight'; var avg=list.reduce(function(s,r){return s+(r.stars||5);},0)/list.length; var h='<div class="container narrow reviews"><h2>What researchers say</h2>'; list.forEach(function(r){ var n=r.stars||5; var st='\u2605'.repeat(n)+'\u2606'.repeat(5-n); h+='<div class="review"><span class="r-stars">'+st+'</span><span class="r-name">'+(r.name||'Verified buyer')+'</span><p class="r-text">'+(r.text||'')+'</p></div>'; }); h+='</div>'; sec.innerHTML=h; foot.parentNode.insertBefore(sec,foot); var ld=document.createElement('script'); ld.type='application/ld+json'; ld.textContent=JSON.stringify({"@context":"https://schema.org","@type":"AggregateRating","ratingValue":avg.toFixed(1),"reviewCount":list.length}); document.head.appendChild(ld); }); })();
