@@ -689,8 +689,21 @@
   if (carousel) {
     var track = carousel.querySelector('.cc-track');
     var slides = carousel.querySelectorAll('.cc-slide');
-    var dots = carousel.querySelectorAll('.cc-dot');
+    var dotsWrap = carousel.querySelector('.cc-dots');
     var i = 0, timer = null, n = slides.length;
+    var dots = [];
+    if (dotsWrap) {
+      dotsWrap.innerHTML = '';
+      for (var _d = 0; _d < n; _d++) {
+        var _b = document.createElement('button');
+        _b.type = 'button';
+        _b.className = 'cc-dot' + (_d === 0 ? ' active' : '');
+        _b.setAttribute('data-i', _d);
+        _b.setAttribute('aria-label', 'Slide ' + (_d + 1));
+        dotsWrap.appendChild(_b);
+      }
+      dots = dotsWrap.querySelectorAll('.cc-dot');
+    }
     function go(x) {
       i = (x + n) % n;
       track.style.transform = 'translateX(' + (-i * 100) + '%)';
